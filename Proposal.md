@@ -14,16 +14,69 @@ Si el usuario tiene preferencias marcadas (p. ej., “naturaleza”), la IA prio
 La información generada se guarda en la base de datos: itinerario, actividades, costos estimados y recomendaciones IA.
 El frontend desarrollado en Streamlit permite al usuario visualizar todo de manera dinámica, incluyendo gráficos de costos, tarjetas de actividades, métricas del viaje.
 
-Arquitectura en capas:
+
+##Arquitectura en capas:
 
 -Capa de presentación → Streamlit
 -Capa de negocio → Regla de cálculo, validaciones, optimización
 -Capa de datos → ORM, modelos, consultas
 -Capa de integración → IA (OpenAI/HuggingFace) + APIs externas
 
-Entidades/Tablas:
 
-Usuario:
+##Entidades/Tablas:
 
-Viaje:
+###Usuario:
+-id_usuario
+-nombre
+-email
+-nacionalidad
+-fecha_registro
+
+###Viaje:
+-idViaje
+-destino
+-fechaInicio
+-fechaFin
+-tipoViaje
+-/costoTotalEstimado
+
+###Itinerario:
+-idIntinerario
+-dia
+-resumenDiaIA
+
+###Actividad:
+-idActividad
+-nombre
+-descripcion
+-precioEstimado
+-categoria
+-horarioSugerido
+-ubicacion
+
+
+###Costos:
+-costoAlojamiento
+-costoTransporte
+-costoActividades
+-costoComidas
+-costoTotalBase
+
+###PreferenciasUsuario:
+-destino
+-costoMin
+-costoMax
+-cantidadPersonas
+-grupo
+-clima
+-otros
+
+###tipoAlojamiento
+-idTipo
+-tipo
+
+###RecomendacionIA:
+-textoGenerado
+-fechaGeneracion
+-tipo
 
