@@ -22,6 +22,10 @@ El frontend desarrollado en Streamlit permite al usuario visualizar todo de mane
 -Capa de datos → ORM, modelos, consultas <br>
 -Capa de integración → IA (OpenAI/HuggingFace) + APIs externas <br>
 
+## Modelo de dominio:
+<img width="1130" height="917" alt="image" src="https://github.com/user-attachments/assets/fcb314c6-45f7-43b0-beab-42af6dd8f8c6" />
+
+
 
 ## Entidades/Tablas:
 
