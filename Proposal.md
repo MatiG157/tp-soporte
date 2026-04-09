@@ -15,7 +15,7 @@ La información generada se guarda en la base de datos: itinerario, actividades,
 El frontend desarrollado en Streamlit permite al usuario visualizar todo de manera dinámica, incluyendo gráficos de costos, tarjetas de actividades, métricas del viaje.
 
 
-##Arquitectura en capas:
+## Arquitectura en capas:
 
 -Capa de presentación → Streamlit <br>
 -Capa de negocio → Regla de cálculo, validaciones, optimización <br>
@@ -23,16 +23,16 @@ El frontend desarrollado en Streamlit permite al usuario visualizar todo de mane
 -Capa de integración → IA (OpenAI/HuggingFace) + APIs externas <br>
 
 
-##Entidades/Tablas:
+## Entidades/Tablas:
 
-###Usuario:<br>
+### Usuario:<br>
 -id_usuario<br>
 -nombre<br>
 -email<br>
 -nacionalidad<br>
 -fecha_registro<br>
 
-###Viaje:<br>
+### Viaje:<br>
 -idViaje<br>
 -destino<br>
 -fechaInicio<br>
@@ -40,12 +40,12 @@ El frontend desarrollado en Streamlit permite al usuario visualizar todo de mane
 -tipoViaje<br>
 -/costoTotalEstimado<br>
 
-###Itinerario:<br>
+### Itinerario:<br>
 -idIntinerario<br>
 -dia<br>
 -resumenDiaIA<br>
 
-###Actividad:<br>
+### Actividad:<br>
 -idActividad<br>
 -nombre<br>
 -descripcion<br>
@@ -55,14 +55,14 @@ El frontend desarrollado en Streamlit permite al usuario visualizar todo de mane
 -ubicacion<br>
 
 
-###Costos:<br>
+### Costos:<br>
 -costoAlojamiento<br>
 -costoTransporte<br>
 -costoActividades<br>
 -costoComidas<br>
 -costoTotalBase<br>
 
-###PreferenciasUsuario:<br>
+### PreferenciasUsuario:<br>
 -destino<br>
 -costoMin<br>
 -costoMax<br>
@@ -71,11 +71,11 @@ El frontend desarrollado en Streamlit permite al usuario visualizar todo de mane
 -clima<br>
 -otros<br>
 
-###tipoAlojamiento:<br>
+### TipoAlojamiento:<br>
 -idTipo<br>
 -tipo<br>
 
-###RecomendacionIA:<br>
+### RecomendacionIA:<br>
 -textoGenerado<br>
 -fechaGeneracion<br>
 -tipo<br>
