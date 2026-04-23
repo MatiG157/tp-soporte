@@ -1,0 +1,47 @@
+# Entorno virtual
+venv/
+.env/
+.venv/
+
+# Variables sensibles
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# VSCode / IDE
+.vscode/
+.idea/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Base de datos local (si usás sqlite para pruebas)
+*.db
+*.sqlite3
+
+# Pytest
+.pytest_cache/
+
+# Migrations cache
+*.orig
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Coverage
+htmlcov/
+.coverage
+
+# mypy
+.mypy_cache/
