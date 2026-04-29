@@ -8,6 +8,7 @@ from src.models.init import db
 # Importar el blueprint de rutas de usuario
 from src.routes.user_routes import user_bp
 from src.routes.user_preferences_routes import user_preferences_bp
+from src.routes.cost_routes import cost_bp
 
 # Cargar las variables del archivo .env
 load_dotenv()
@@ -26,6 +27,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.register_blueprint(user_bp, url_prefix='/usuarios')
 app.register_blueprint(user_preferences_bp, url_prefix='/preferencias')
+app.register_blueprint(cost_bp, url_prefix='/costos')
 
 # 2. Inicializar la extensión db con la aplicación
 db.init_app(app)
