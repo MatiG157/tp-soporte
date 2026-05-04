@@ -1,0 +1,259 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<!-- Capa para oscurecer y centrar todo (le añadimos min-vh-100 para que ocupe toda la pantalla) -->
+<main class="bg-overlay d-flex flex-column align-items-center justify-content-center py-5 px-3 min-vh-100">
+
+    <!-- Header Text -->
+    <div class="text-center text-white mb-5 mx-auto mt-5" style="max-width: 600px;">
+        <h1 class="display-3 fw-bold">Design Your Perfect Escape</h1>
+        <p class="lead">Plan, budget, and explore with guided discovery. Every detail of your journey, seamlessly
+            organized in one place.</p>
+    </div>
+
+    <!-- Form Card -->
+    <form class="card bg-white p-4 rounded-4 shadow-lg w-100" style="max-width: 800px;" id="trip-form">
+
+        <!-- Destino -->
+        <div class="row g-3 mb-3">
+            <div class="col-sm-6">
+                <div class="d-flex align-items-center bg-light rounded p-2 h-100">
+                    <i class="fa-solid fa-location-dot fs-5 text-center" style="width: 30px;"></i>
+                    <div class="flex-grow-1 ms-2">
+                        <label class="form-label-small mb-1 d-block text-uppercase fw-bold"
+                            style="font-size: 0.75rem;">Origin</label>
+                        <input type="text" class="form-control input-clean p-0 border-0 bg-transparent shadow-none"
+                            placeholder="From?">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="d-flex align-items-center bg-light rounded p-2 h-100">
+                    <i class="fa-solid fa-location-dot fs-5 text-center" style="width: 30px;"></i>
+                    <div class="flex-grow-1 ms-2">
+                        <label class="form-label-small mb-1 d-block text-uppercase fw-bold"
+                            style="font-size: 0.75rem;">Destination</label>
+                        <input type="text" class="form-control input-clean p-0 border-0 bg-transparent shadow-none"
+                            placeholder="Where to?">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fechas -->
+        <div class="row g-3 mb-3">
+            <div class="col-sm-6">
+                <div class="d-flex align-items-center bg-light rounded p-2 h-100">
+                    <i class="fa-solid fa-plane-arrival fs-5 text-center" style="width: 30px;"></i>
+                    <div class="flex-grow-1 ms-2">
+                        <label class="form-label-small mb-1 d-block text-uppercase fw-bold"
+                            style="font-size: 0.75rem;">Arrival</label>
+                        <input type="date" class="form-control input-clean p-0 border-0 bg-transparent shadow-none">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="d-flex align-items-center bg-light rounded p-2 h-100">
+                    <i class="fa-solid fa-plane-departure fs-5 text-center" style="width: 30px;"></i>
+                    <div class="flex-grow-1 ms-2">
+                        <label class="form-label-small mb-1 d-block text-uppercase fw-bold"
+                            style="font-size: 0.75rem;">Departure</label>
+                        <input type="date" class="form-control input-clean p-0 border-0 bg-transparent shadow-none">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Presupuesto y Viajeros -->
+        <div class="row g-3 mb-3">
+            <div class="col-sm-6">
+                <div class="d-flex align-items-center bg-light rounded p-2 h-100">
+                    <i class="fa-solid fa-money-bill-wave fs-5 text-center" style="width: 30px;"></i>
+                    <div class="flex-grow-1 ms-2">
+                        <label class="form-label-small mb-1 d-block text-uppercase fw-bold"
+                            style="font-size: 0.75rem;">Budget</label>
+
+                        <div class="d-flex align-items-center">
+                            <!-- Grupo Min -->
+                            <div class="budget-group">
+                                <span class="v-separator"></span>
+                                <input type="number" id="budgetMin"
+                                    class="form-control input-clean p-0 border-0 bg-transparent shadow-none w-100"
+                                    placeholder="Min $" step="100">
+                            </div>
+
+                            <!-- Espaciador entre los dos campos (opcional) -->
+                            <div class="mx-2"></div>
+
+                            <!-- Grupo Max -->
+                            <div class="budget-group">
+                                <span class="v-separator"></span>
+                                <input type="number" id="budgetMax"
+                                    class="form-control input-clean p-0 border-0 bg-transparent shadow-none w-100"
+                                    placeholder="Max $">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="d-flex align-items-center bg-light rounded p-2 h-100">
+                    <i class="fa-solid fa-user-group fs-5 text-center" style="width: 30px;"></i>
+                    <div class="flex-grow-1 ms-2">
+                        <label class="form-label-small mb-1 d-block text-uppercase fw-bold"
+                            style="font-size: 0.75rem;">Travelers</label>
+                        <input type="number" class="form-control input-clean p-0 border-0 bg-transparent shadow-none"
+                            placeholder="Count">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        </div>
+
+        <!-- Más Detalles (Con Collapse) -->
+        <div class="mt-4">
+
+            <!-- Botón que activa el collapse -->
+            <h6 class="text-uppercase fw-bold mb-3 d-inline-flex align-items-center user-select-none"
+                style="color: var(--brand-color, #006d5b); cursor: pointer;" data-bs-toggle="collapse"
+                data-bs-target="#moreDetailsCollapse" aria-expanded="false" aria-controls="moreDetailsCollapse">
+                <i class="fa-solid fa-chevron-down me-2 transition-transform"></i> More Details
+            </h6>
+
+            <!-- Contenedor que se colapsa -->
+            <div class="collapse" id="moreDetailsCollapse">
+
+                <div class="bg-light rounded p-3 mb-3">
+                    <label class="form-label-small mb-1 d-block text-uppercase fw-bold" style="font-size: 0.75rem;">Ages
+                        of Travelers</label>
+                    <input type="text" class="form-control input-clean p-0 border-0 bg-transparent shadow-none"
+                        placeholder="e.g. 25, 28, 5">
+                </div>
+
+                <!-- Fila invertida: Accommodation a la izquierda, Trip Type a la derecha -->
+                <div class="row g-3 mb-3">
+                    <!-- Accommodation Checkboxes -->
+                    <div class="col-sm-6">
+                        <div class="bg-light rounded p-3 h-100">
+                            <label class="text-uppercase fw-bold d-block mb-2" style="font-size: 0.8rem;">
+                                Accommodation
+                            </label>
+                            <div class="d-flex flex-column gap-2">
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value="hotel"
+                                        id="acc_hotel">
+                                    <label class="form-check-label" for="acc_hotel">Hotel</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value="hostel"
+                                        id="acc_hostel">
+                                    <label class="form-check-label" for="acc_hostel">Hostel</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value="airbnb"
+                                        id="acc_airbnb">
+                                    <label class="form-check-label" for="acc_airbnb">Airbnb</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value="resort"
+                                        id="acc_resort">
+                                    <label class="form-check-label" for="acc_resort">Resort</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trip Type Checkboxes -->
+                    <div class="col-sm-6">
+                        <div class="bg-light rounded p-3 h-100">
+                            <label class="text-uppercase fw-bold d-block mb-2" style="font-size: 0.8rem;">
+                                Trip Type
+                            </label>
+                            <div class="d-flex flex-column gap-2">
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value="educational"
+                                        id="trip_educational">
+                                    <label class="form-check-label" for="trip_educational">Educational</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value="family"
+                                        id="trip_family">
+                                    <label class="form-check-label" for="trip_family">Family</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value="friends"
+                                        id="trip_friends">
+                                    <label class="form-check-label" for="trip_friends">Friends</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value="solo"
+                                        id="trip_solo">
+                                    <label class="form-check-label" for="trip_solo">Solo</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transport Checkboxes -->
+                <div class="bg-light rounded p-3 mb-3">
+                    <label class="text-uppercase fw-bold d-block mb-2" style="font-size: 0.8rem;">
+                        Transport
+                    </label>
+                    <div class="d-flex flex-wrap gap-4">
+                        <div class="form-check">
+                            <input class="form-check-input custom-checkbox" type="checkbox" value="plane"
+                                id="trans_plane">
+                            <label class="form-check-label" for="trans_plane">Plane</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input custom-checkbox" type="checkbox" value="train"
+                                id="trans_train">
+                            <label class="form-check-label" for="trans_train">Train</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input custom-checkbox" type="checkbox" value="car" id="trans_car">
+                            <label class="form-check-label" for="trans_car">Car</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input custom-checkbox" type="checkbox" value="bus" id="trans_bus">
+                            <label class="form-check-label" for="trans_bus">Bus</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preffered Activities -->
+                <div class="bg-light rounded p-3 mb-3">
+                    <label for="activities" class="text-uppercase text-secondary fw-bold d-block mb-2"
+                        style="font-size: 0.8rem;">Preferred Activities</label>
+                    <select id="activities" class="form-select form-select-sm border-0 bg-light shadow-none">
+                        <option selected disabled>Choose activities...</option>
+                        <option value="sightseeing">Sightseeing</option>
+                        <option value="adventure">Adventure</option>
+                        <option value="relaxation">Relaxation</option>
+                        <option value="cultural">Cultural</option>
+                    </select>
+                </div>
+
+                <!-- Extras (Texto Libre) -->
+                <div class="bg-light rounded p-3 mb-3">
+                    <label for="extras" class="text-uppercase text-secondary fw-bold d-block mb-2"
+                        style="font-size: 0.8rem;">Extras / Special Requests</label>
+                    <textarea id="extras" class="form-control input-clean p-0 border-0 bg-transparent shadow-none"
+                        rows="2" placeholder="Any extra destination or requirement? (e.g. Needs Vegan Food)"></textarea>
+                </div>
+
+            </div> <!-- Fin del Collapse -->
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-brand w-100 py-3 fw-bold rounded-3 mt-2 fs-5 text-white"
+            style="background-color: var(--brand-color, #006d5b);">
+            <i class="fa-regular fa-compass me-2"></i> Create Trip
+        </button>
+    </form>
+</main>
+{% endblock %}

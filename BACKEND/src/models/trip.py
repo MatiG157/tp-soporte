@@ -11,6 +11,7 @@ class Viaje(db.Model):
         nullable=False
     )
 
+    #origen = db.Column(db.String(120), nullable=False)
     destino = db.Column(db.String(120), nullable=False)
     fecha_inicio = db.Column(db.Date, nullable=False)
     fecha_fin = db.Column(db.Date, nullable=False)
