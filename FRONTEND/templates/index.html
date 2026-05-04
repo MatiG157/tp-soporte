@@ -110,9 +110,6 @@
             </div>
         </div>
 
-
-        </div>
-
         <!-- Más Detalles (Con Collapse) -->
         <div class="mt-4">
 
@@ -166,7 +163,7 @@
                         </div>
                     </div>
 
-                    <!-- Trip Type Checkboxes -->
+                    <!-- Trip Type Radios -->
                     <div class="col-sm-6">
                         <div class="bg-light rounded p-3 h-100">
                             <label class="text-uppercase fw-bold d-block mb-2" style="font-size: 0.8rem;">
@@ -174,22 +171,22 @@
                             </label>
                             <div class="d-flex flex-column gap-2">
                                 <div class="form-check">
-                                    <input class="form-check-input custom-checkbox" type="checkbox" value="educational"
+                                    <input class="form-check-input custom-checkbox" type="radio" name="tripType" value="educational"
                                         id="trip_educational">
                                     <label class="form-check-label" for="trip_educational">Educational</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input custom-checkbox" type="checkbox" value="family"
+                                    <input class="form-check-input custom-checkbox" type="radio" name="tripType" value="family"
                                         id="trip_family">
                                     <label class="form-check-label" for="trip_family">Family</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input custom-checkbox" type="checkbox" value="friends"
+                                    <input class="form-check-input custom-checkbox" type="radio" name="tripType" value="friends"
                                         id="trip_friends">
                                     <label class="form-check-label" for="trip_friends">Friends</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input custom-checkbox" type="checkbox" value="solo"
+                                    <input class="form-check-input custom-checkbox" type="radio" name="tripType" value="solo"
                                         id="trip_solo">
                                     <label class="form-check-label" for="trip_solo">Solo</label>
                                 </div>
@@ -198,49 +195,68 @@
                     </div>
                 </div>
 
-                <!-- Transport Checkboxes -->
-                <div class="bg-light rounded p-3 mb-3">
-                    <label class="text-uppercase fw-bold d-block mb-2" style="font-size: 0.8rem;">
-                        Transport
-                    </label>
-                    <div class="d-flex flex-wrap gap-4">
-                        <div class="form-check">
-                            <input class="form-check-input custom-checkbox" type="checkbox" value="plane"
-                                id="trans_plane">
-                            <label class="form-check-label" for="trans_plane">Plane</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input custom-checkbox" type="checkbox" value="train"
-                                id="trans_train">
-                            <label class="form-check-label" for="trans_train">Train</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input custom-checkbox" type="checkbox" value="car" id="trans_car">
-                            <label class="form-check-label" for="trans_car">Car</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input custom-checkbox" type="checkbox" value="bus" id="trans_bus">
-                            <label class="form-check-label" for="trans_bus">Bus</label>
+                                <!-- Fila: Transport (Izquierda) y Preferred Activities (Derecha) -->
+                <div class="row g-3 mb-3">
+                    
+                    <!-- Transport Checkboxes -->
+                    <div class="col-sm-6">
+                        <div class="bg-light rounded p-3 h-100">
+                            <label class="text-uppercase fw-bold d-block mb-2" style="font-size: 0.8rem;">
+                                Transport
+                            </label>
+                            <div class="d-flex flex-column gap-2">
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value="plane" id="trans_plane">
+                                    <label class="form-check-label" for="trans_plane">Plane</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value="train" id="trans_train">
+                                    <label class="form-check-label" for="trans_train">Train</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value="car" id="trans_car">
+                                    <label class="form-check-label" for="trans_car">Car</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value="bus" id="trans_bus">
+                                    <label class="form-check-label" for="trans_bus">Bus</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Preffered Activities -->
-                <div class="bg-light rounded p-3 mb-3">
-                    <label for="activities" class="text-uppercase text-secondary fw-bold d-block mb-2"
-                        style="font-size: 0.8rem;">Preferred Activities</label>
-                    <select id="activities" class="form-select form-select-sm border-0 bg-light shadow-none">
-                        <option selected disabled>Choose activities...</option>
-                        <option value="sightseeing">Sightseeing</option>
-                        <option value="adventure">Adventure</option>
-                        <option value="relaxation">Relaxation</option>
-                        <option value="cultural">Cultural</option>
-                    </select>
+                    <!-- Preferred Activities Checkboxes -->
+                    <div class="col-sm-6">
+                        <div class="bg-light rounded p-3 h-100">
+                            <label class="text-uppercase fw-bold d-block mb-2" style="font-size: 0.8rem;">
+                                Preferred Activities
+                            </label>
+                            <div class="d-flex flex-column gap-2">
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value="sightseeing" id="act_sightseeing">
+                                    <label class="form-check-label" for="act_sightseeing">Sightseeing</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value="adventure" id="act_adventure">
+                                    <label class="form-check-label" for="act_adventure">Adventure</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value="relaxation" id="act_relaxation">
+                                    <label class="form-check-label" for="act_relaxation">Relaxation</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value="cultural" id="act_cultural">
+                                    <label class="form-check-label" for="act_cultural">Cultural</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- Extras (Texto Libre) -->
                 <div class="bg-light rounded p-3 mb-3">
-                    <label for="extras" class="text-uppercase text-secondary fw-bold d-block mb-2"
+                    <label for="extras" class="text-uppercase fw-bold d-block mb-2"
                         style="font-size: 0.8rem;">Extras / Special Requests</label>
                     <textarea id="extras" class="form-control input-clean p-0 border-0 bg-transparent shadow-none"
                         rows="2" placeholder="Any extra destination or requirement? (e.g. Needs Vegan Food)"></textarea>
