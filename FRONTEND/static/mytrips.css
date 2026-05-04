@@ -83,6 +83,7 @@ body {
     font-weight: 700;
     font-size: 2.5rem;
     margin-bottom: 0.25rem;
+    margin-top: 4rem; /* Agrega esto */
 }
 
 .trips-subtitle {
