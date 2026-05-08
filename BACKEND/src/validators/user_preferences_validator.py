@@ -6,6 +6,7 @@ class UserPreferencesSchema(Schema):
         error_messages={"required": "El ID del usuario es obligatorio para asociar sus preferencias."}
     )
     destino = fields.String(validate=validate.Length(max=120))
+    origen = fields.String(validate=validate.Length(max=120))
     costo_min = fields.Float(
         validate=validate.Range(min=0, error="El costo mínimo debe ser 0 o positivo.")
     )
@@ -25,11 +26,12 @@ class UserPreferencesSchema(Schema):
         fields.Integer(),
         required=False
     )
-    clima = fields.String(validate=validate.Length(max=50))
+    hospedaje = fields.String(validate=validate.Length(max=100))
     edades_viajeros = fields.String(validate=validate.Length(max=100))
     tipo_transporte = fields.String(validate=validate.Length(max=50))
     fecha_inicio = fields.Date()
     fecha_fin = fields.Date()
+    act_preferidas = fields.String(validate=validate.Length(max=100))
     otros = fields.String()
 
     # Validación a nivel de esquema para comparar fechas

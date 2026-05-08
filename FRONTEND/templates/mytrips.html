@@ -50,67 +50,119 @@
     <div class="row g-4 mt-1">
         <!-- Card 1: Tokyo -->
         <div class="col-12 col-md-6 col-lg-4">
-            <a href="#" class="trip-card d-block">
-                <div class="trip-card-bg" style="background-image: url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-                <div class="trip-card-overlay">
-                    <span class="badge-custom badge-new"><i class="bi bi-star-fill me-1"></i> New Trip</span>
-                    <div>
-                        <span class="trip-date"><i class="bi bi-calendar3 me-1"></i> Jul 12 - Jul 26, 2024</span>
-                        <div class="trip-title">Summer in Tokyo</div>
-                        <div class="trip-travelers"><i class="bi bi-people-fill me-1"></i> 2 Travelers</div>
+            <div class="trip-card d-block position-relative">
+                <a href="#" class="text-decoration-none">
+                    <div class="trip-card-bg" style="background-image: url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="trip-card-overlay">
+                        <span class="badge-custom badge-new"><i class="bi bi-star-fill me-1"></i> New Trip</span>
+                        <div>
+                            <span class="trip-date"><i class="bi bi-calendar3 me-1"></i> Jul 12 - Jul 26, 2024</span>
+                            <div class="trip-title">Summer in Tokyo</div>
+                            <div class="trip-travelers"><i class="bi bi-people-fill me-1"></i> 2 Travelers</div>
+                        </div>
                     </div>
+                </a>
+                <div class="dropdown position-absolute top-0 end-0 m-3 z-3">
+                    <button class="btn btn-sm text-white rounded-circle border-0 shadow-none d-flex align-items-center justify-content-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background: rgba(0,0,0,0.5); width: 32px; height: 32px;">
+                        <i class="fa-solid fa-ellipsis-vertical text-white"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                        <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-eye me-2" style="color: var(--brand-color, #006d5b);"></i> Ver viaje</a></li>
+                        <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-pen me-2" style="color: var(--brand-color, #006d5b);"></i> Editar viaje</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="#"><i class="fa-solid fa-trash me-2 text-danger"></i> Eliminar viaje</a></li>
+                    </ul>
                 </div>
-            </a>
+            </div>
         </div>
 
         <!-- Card 2: Paris -->
         <div class="col-12 col-md-6 col-lg-4">
-            <a href="#" class="trip-card d-block">
-                <div class="trip-card-bg" style="background-image: url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-                <div class="trip-card-overlay">
-                    <div>
-                        <span class="trip-date"><i class="bi bi-calendar3 me-1"></i> Sep 5 - Sep 12</span>
-                        <div class="trip-title">Paris Getaway</div>
-                        <div class="trip-travelers"><i class="bi bi-people-fill me-1"></i> 4 Travelers</div>
+            <div class="trip-card d-block position-relative">
+                <a href="#" class="text-decoration-none">
+                    <div class="trip-card-bg" style="background-image: url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="trip-card-overlay">
+                        <div>
+                            <span class="trip-date"><i class="bi bi-calendar3 me-1"></i> Sep 5 - Sep 12</span>
+                            <div class="trip-title">Paris Getaway</div>
+                            <div class="trip-travelers"><i class="bi bi-people-fill me-1"></i> 4 Travelers</div>
+                        </div>
                     </div>
+                </a>
+                <div class="dropdown position-absolute top-0 end-0 m-3 z-3">
+                    <button class="btn btn-sm text-white rounded-circle border-0 shadow-none d-flex align-items-center justify-content-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background: rgba(0,0,0,0.5); width: 32px; height: 32px;">
+                        <i class="fa-solid fa-ellipsis-vertical text-white"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                        <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-eye me-2" style="color: var(--brand-color, #006d5b);"></i> Ver viaje</a></li>
+                        <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-pen me-2" style="color: var(--brand-color, #006d5b);"></i> Editar viaje</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="#"><i class="fa-solid fa-trash me-2 text-danger"></i> Eliminar viaje</a></li>
+                    </ul>
                 </div>
-            </a>
+            </div>
         </div>
 
         <!-- Card 3: Roman Holiday -->
         <div class="col-12 col-md-6 col-lg-4">
-            <a href="#" class="trip-card d-block">
-                <div class="trip-card-bg" style="background-image: url('https://images.unsplash.com/photo-1552832230-c0197dd311b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-                <div class="trip-card-overlay">
-                    <div>
-                        <span class="trip-date text-dark" style="background-color: rgba(255,255,255,0.7);"><i class="bi bi-calendar3 me-1"></i> Oct 10 - Oct 15</span>
-                        <div class="trip-title">Roman Holiday</div>
-                        <div class="trip-travelers"><i class="bi bi-people-fill me-1"></i> 2 Travelers</div>
+            <div class="trip-card d-block position-relative">
+                <a href="#" class="text-decoration-none">
+                    <div class="trip-card-bg" style="background-image: url('https://images.unsplash.com/photo-1552832230-c0197dd311b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="trip-card-overlay">
+                        <div>
+                            <span class="trip-date text-dark" style="background-color: rgba(255,255,255,0.7);"><i class="bi bi-calendar3 me-1"></i> Oct 10 - Oct 15</span>
+                            <div class="trip-title">Roman Holiday</div>
+                            <div class="trip-travelers"><i class="bi bi-people-fill me-1"></i> 2 Travelers</div>
+                        </div>
                     </div>
+                </a>
+                <div class="dropdown position-absolute top-0 end-0 m-3 z-3">
+                    <button class="btn btn-sm text-white rounded-circle border-0 shadow-none d-flex align-items-center justify-content-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background: rgba(0,0,0,0.5); width: 32px; height: 32px;">
+                        <i class="fa-solid fa-ellipsis-vertical text-white"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                        <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-eye me-2" style="color: var(--brand-color, #006d5b);"></i> Ver viaje</a></li>
+                        <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-pen me-2" style="color: var(--brand-color, #006d5b);"></i> Editar viaje</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="#"><i class="fa-solid fa-trash me-2 text-danger"></i> Eliminar viaje</a></li>
+                    </ul>
                 </div>
-            </a>
+            </div>
         </div>
 
         <!-- Card 4: India (Past Trip) -->
         <div class="col-12 col-md-6 col-lg-4">
-            <a href="#" class="trip-card past-trip d-block">
-                <div class="trip-card-bg" style="background-image: url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-                <div class="trip-card-overlay">
-                    <span class="badge-custom badge-past">Past Trip</span>
-                    <div>
-                        <span class="trip-date"><i class="bi bi-calendar3 me-1"></i> Jan 4 - Jan 18, 2023</span>
-                        <div class="trip-title">India Exploration</div>
-                        <div class="trip-travelers"><i class="bi bi-people-fill me-1"></i> 1 Traveler</div>
+            <div class="trip-card past-trip d-block position-relative">
+                <a href="#" class="text-decoration-none">
+                    <div class="trip-card-bg" style="background-image: url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="trip-card-overlay">
+                        <span class="badge-custom badge-past">Past Trip</span>
+                        <div>
+                            <span class="trip-date"><i class="bi bi-calendar3 me-1"></i> Jan 4 - Jan 18, 2023</span>
+                            <div class="trip-title">India Exploration</div>
+                            <div class="trip-travelers"><i class="bi bi-people-fill me-1"></i> 1 Traveler</div>
+                        </div>
                     </div>
+                </a>
+                <div class="dropdown position-absolute top-0 end-0 m-3 z-3">
+                    <button class="btn btn-sm text-white rounded-circle border-0 shadow-none d-flex align-items-center justify-content-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background: rgba(0,0,0,0.5); width: 32px; height: 32px;">
+                        <i class="fa-solid fa-ellipsis-vertical text-white"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                        <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-eye me-2" style="color: var(--brand-color, #006d5b);"></i> Ver viaje</a></li>
+                        <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-pen me-2" style="color: var(--brand-color, #006d5b);"></i> Editar viaje</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="#"><i class="fa-solid fa-trash me-2 text-danger"></i> Eliminar viaje</a></li>
+                    </ul>
                 </div>
-            </a>
+            </div>
         </div>
 
         <!-- Card 5: Plan New -->
         <div class="col-12 col-md-6 col-lg-4">
-            <div class="add-trip-card">
-                <div class="add-icon-wrapper">
-                    <i class="bi bi-plus"></i>
+            <div class="add-trip-card cursor-pointer" onclick="window.location.href='#'" style="cursor: pointer;">
+                <div class="add-icon-wrapper rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px; background-color: #88eed0;">
+                    <i class="fa-solid fa-plus fs-3 text-white"></i>
                 </div>
                 <div class="add-title">Plan a New Adventure</div>
                 <div class="add-subtitle">Start building your next unforgettable journey.</div>

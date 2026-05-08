@@ -23,15 +23,17 @@ class PreferenciasUsuario(db.Model):
     )
 
     destino = db.Column(db.String(120))
+    origen = db.Column(db.String(120))
     costo_min = db.Column(db.Float)
     costo_max = db.Column(db.Float)
     cantidad_personas = db.Column(db.Integer)
-    grupo = db.Column(db.String(30))  # familiar, amigos, educativo
-    clima = db.Column(db.String(50))
+    grupo = db.Column(db.String(50))  # familiar, amigos, educativo
+    hospedaje = db.Column(db.String(100)) # hotel, hostel, departamento, camping
     edades_viajeros = db.Column(db.String(100))   # "25, 28, 5"
-    tipo_transporte = db.Column(db.String(50))     # Plane, Train, Car, Bus
+    tipo_transporte = db.Column(db.String(100))     # Plane, Train, Car, Bus
     fecha_inicio = db.Column(db.Date)               
     fecha_fin = db.Column(db.Date) 
+    act_preferidas = db.Column(db.String(100))  # tursimo, aventura, cultural, relax
     otros = db.Column(db.Text)
 
     usuario = db.relationship("Usuario", back_populates="preferencias")

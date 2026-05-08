@@ -12,16 +12,18 @@ def crear_preferencia(datos):
 
     nueva_preferencia = PreferenciasUsuario(
         id_usuario=datos_validados['id_usuario'],
+        origen=datos_validados.get('origen'),
         destino=datos_validados.get('destino'),
         costo_min=datos_validados.get('costo_min'),
         costo_max=datos_validados.get('costo_max'),
         cantidad_personas=datos_validados.get('cantidad_personas'),
         grupo=datos_validados.get('grupo'),
-        clima=datos_validados.get('clima'),
+        hospedaje=datos_validados.get('hospedaje'),
         edades_viajeros=datos_validados.get('edades_viajeros'),
         tipo_transporte=datos_validados.get('tipo_transporte'),
         fecha_inicio=datos_validados.get('fecha_inicio'),
         fecha_fin=datos_validados.get('fecha_fin'),
+        act_preferidas=datos_validados.get('act_preferidas'),
         otros=datos_validados.get('otros')
     )
 
@@ -53,6 +55,7 @@ def actualizar_preferencia(id_preferencia, datos):
     if not preferencia:
         return None
 
+    preferencia.origen = datos_validados.get('origen', preferencia.origen)
     preferencia.destino = datos_validados.get('destino', preferencia.destino)
     preferencia.costo_min = datos_validados.get(
         'costo_min', preferencia.costo_min)
@@ -61,7 +64,7 @@ def actualizar_preferencia(id_preferencia, datos):
     preferencia.cantidad_personas = datos_validados.get(
         'cantidad_personas', preferencia.cantidad_personas)
     preferencia.grupo = datos_validados.get('grupo', preferencia.grupo)
-    preferencia.clima = datos_validados.get('clima', preferencia.clima)
+    preferencia.hospedaje = datos_validados.get('hospedaje', preferencia.hospedaje)
     preferencia.edades_viajeros = datos_validados.get(
         'edades_viajeros', preferencia.edades_viajeros)
     preferencia.tipo_transporte = datos_validados.get(
@@ -70,6 +73,7 @@ def actualizar_preferencia(id_preferencia, datos):
         'fecha_inicio', preferencia.fecha_inicio)
     preferencia.fecha_fin = datos_validados.get(
         'fecha_fin', preferencia.fecha_fin)
+    preferencia.act_preferidas = datos_validados.get('act_preferidas', preferencia.act_preferidas)
     preferencia.otros = datos_validados.get('otros', preferencia.otros)
 
     # Si viene el arreglo en la petición, actualizamos la relación
