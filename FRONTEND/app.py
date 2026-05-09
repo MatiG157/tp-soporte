@@ -68,21 +68,19 @@ def logout():
 def mytrips():
    return render_template('mytrips.html') 
 
-@app.route('/dashboard')
-def dashboard():
-    """Panel principal del usuario con sus viajes"""
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
+@app.route('/compare')
+def compare():
+    #if 'user_id' not in session:
+        #return redirect(url_for('login'))
+    return render_template('compare.html') 
 
-    viajes = []
-    try:
-        resp = requests.get(f'{BACKEND_URL}/viajes/usuario/{session["user_id"]}')
-        if resp.status_code == 200:
-            viajes = resp.json()
-    except requests.exceptions.ConnectionError:
-        pass  # El template maneja la lista vacía
 
-    return render_template('dashboard.html', viajes=viajes)
+@app.route('/itinerary')
+def itinerary():
+    #if 'user_id' not in session:
+        #return redirect(url_for('login'))
+    return render_template('itinerary.html') 
+    
 
 
 @app.route('/planificar', methods=['GET', 'POST'])

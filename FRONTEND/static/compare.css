@@ -1,0 +1,27 @@
+.plan-card {
+    border-radius: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.plan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+}
+
+.recommended-card {
+    transform: scale(1.02);
+    z-index: 2;
+}
+
+.recommended-card:hover {
+    transform: scale(1.03) translateY(-5px);
+}
+
+.activity-icon {
+    position: relative;
+    overflow: hidden;
+}
+
+.text-info {
+    color: var(--brand-color, #006d5b) !important;
+}

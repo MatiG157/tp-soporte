@@ -1,0 +1,272 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<link rel="stylesheet" href="{{ url_for('static', filename='compare.css') }}">
+<style>
+    body {
+        background-image: none !important;
+        background-color: #ffffff !important;
+    }
+    .page-wrapper {
+        display: flex;
+        margin-top: 72px; /* Approx header height */
+        min-height: calc(100vh - 72px);
+    }
+    .sidebar {
+        width: 260px;
+        background-color: #f9fbfb;
+        border-right: 1px solid #e2e8f0;
+        padding: 2rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+    }
+    .main-content {
+        flex-grow: 1;
+        padding: 2rem;
+        background-color: #ffffff;
+    }
+    .sidebar-user {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2.5rem;
+    }
+    .sidebar-user img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 12px;
+    }
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        color: #64748b;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        transition: all 0.2s;
+    }
+    .sidebar-link:hover {
+        background-color: #f1f5f9;
+        color: #0f172a;
+    }
+    .sidebar-link.active-link {
+        background-color: #ffffff;
+        color: var(--brand-color, #006d5b);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        border: 1px solid #f1f5f9;
+    }
+    .sidebar-link i {
+        width: 24px;
+        text-align: center;
+        margin-right: 10px;
+        font-size: 1.1rem;
+        color: #94a3b8; /* Gris por defecto */
+        transition: color 0.2s;
+    }
+    .sidebar-link.active-link {
+        background-color: #ffffff;
+        color: var(--brand-color, #006d5b);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        border: 1px solid #f1f5f9;
+        pointer-events: none;
+    }
+    .sidebar-link.active-link i {
+        color: var(--brand-color, #006d5b);
+    }
+    .sidebar-link:hover i {
+        color: var(--brand-color, #006d5b);
+    }
+    .plan-card-container {
+        max-width: 300px; /* Hacerlas menos anchas */
+        margin: 0 auto;
+    }
+</style>
+
+<div class="page-wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Links de navegación -->
+        <div class="nav flex-column mb-auto mt-4">
+            <a href="#" class="sidebar-link active-link">
+                <i class="fa-solid fa-arrow-right-arrow-left"></i> Compare
+            </a>
+            <a href="#" class="sidebar-link">
+                <i class="fa-solid fa-map"></i> Itinerario
+            </a>
+            <a href="#" class="sidebar-link">
+                <i class="fa-solid fa-piggy-bank"></i> Budget
+            </a>
+            <a href="#" class="sidebar-link">
+                <i class="fa-solid fa-gear"></i> Settings
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <main class="container py-2">
+            <!-- Header Section -->
+            <div class="text-center mb-4 mt-2">
+                <span class="badge rounded-pill mb-2 py-2 px-3 fw-bold" style="background-color: #99f6e4; color: #065f46; letter-spacing: 0.5px;">
+            <i class="fa-solid fa-wand-magic-sparkles me-1"></i> AI GENERATED OPTIONS
+        </span>
+        <h1 class="display-6 fw-bold mb-2" style="color: #111827;">Choose Your Journey</h1>
+        <p class="text-secondary fs-6" style="max-width: 700px; margin: 0 auto;">
+            We've crafted three unique itineraries based on your preferences. Compare the pace, style, and estimated costs below.
+        </p>
+    </div>
+
+    <!-- Pricing Cards -->
+    <div class="d-flex flex-wrap justify-content-center align-items-stretch mt-5 gap-3">
+        
+        <!-- Economy Plan -->
+        <div class="plan-card-container" style="max-width: 320px; flex: 1 1 300px;">
+            <div class="card h-100 shadow-sm plan-card" style="border: 1px solid #d1d5db; min-height: 520px; cursor: pointer;" onclick="selectPlan(this)">
+                <div class="card-body p-4 d-flex flex-column" style="pointer-events: none;">
+                    <div class="d-flex align-items-center mb-3 text-secondary fw-bold" style="font-size: 0.8rem;">
+                        <i class="fa-solid fa-person-walking-luggage me-2 fs-6"></i> ECONOMY
+                    </div>
+                    <h4 class="card-title fw-bold mb-1">Local Explorer</h4>
+                    <div class="fs-2 fw-bold mb-3">$1,250<span class="fs-6 fw-normal text-secondary"> / total est.</span></div>
+                    
+                    <hr class="bg-light border-2 border-top border-light opacity-100">
+                    
+                    <p class="fw-bold text-secondary text-uppercase mb-3 mt-3" style="font-size: 0.7rem;">Key Highlights</p>
+                    <ul class="list-unstyled mb-4" style="font-size: 0.85rem;">
+                        <li class="mb-3 d-flex"><i class="fa-solid fa-circle-check text-info me-2 mt-1"></i> Public transit passes included</li>
+                        <li class="mb-3 d-flex"><i class="fa-solid fa-circle-check text-info me-2 mt-1"></i> Boutique hostel private rooms</li>
+                        <li class="mb-2 d-flex"><i class="fa-solid fa-circle-check text-info me-2 mt-1"></i> Self-guided walking tours</li>
+                    </ul>
+
+                    <p class="fw-bold text-secondary text-uppercase mb-3 mt-auto" style="font-size: 0.7rem;">Primary Activities</p>
+                    <div class="d-flex gap-2 mb-4">
+                        <div class="activity-icon bg-secondary rounded text-white d-flex align-items-center justify-content-center" style="width:45px; height:45px; background-image: url('https://images.unsplash.com/photo-1510251197878-a2e6d2cb590c?w=100&q=80'); background-size: cover;"></div>
+                        <div class="activity-icon bg-dark text-white rounded d-flex align-items-center justify-content-center opacity-75" style="width:45px; height:45px; line-height: 1; font-size: 0.45rem;">ACTIVITY</div>
+                        <div class="activity-icon bg-light text-secondary rounded d-flex align-items-center justify-content-center fw-bold" style="width:45px; height:45px; font-size: 0.8rem;">+4</div>
+                    </div>
+                    
+                    <button class="btn btn-light w-100 fw-bold border py-2 mt-auto plan-btn" style="pointer-events: auto;">PREVIEW ECONOMY</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Balanced Plan (Recommended) -->
+        <div class="plan-card-container position-relative" style="max-width: 320px; flex: 1 1 300px;">
+            <div class="card h-100 shadow plan-card recommended-card" style="border: 1px solid #d1d5db; min-height: 520px; cursor: pointer;" onclick="selectPlan(this)">
+                <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill px-3 py-1" style="background-color: var(--brand-color, #006d5b); font-size: 0.75rem; z-index: 10;">
+                    RECOMMENDED
+                </span>
+                <div class="card-body p-4 d-flex flex-column" style="pointer-events: none;">
+                    <div class="d-flex align-items-center mb-3 fw-bold text-secondary" style="font-size: 0.8rem;">
+                        <i class="fa-solid fa-scale-balanced me-2 fs-6"></i> BALANCED
+                    </div>
+                    <h4 class="card-title fw-bold mb-1">Guided Discovery</h4>
+                    <div class="fs-2 fw-bold mb-3">$2,850<span class="fs-6 fw-normal text-secondary"> / total est.</span></div>
+                    
+                    <hr class="bg-light border-2 border-top border-light opacity-100">
+                    
+                    <p class="fw-bold text-secondary text-uppercase mb-3 mt-3" style="font-size: 0.7rem;">Key Highlights</p>
+                    <ul class="list-unstyled mb-4" style="font-size: 0.85rem;">
+                        <li class="mb-3 d-flex"><i class="fa-solid fa-circle-check text-info me-2 mt-1"></i> Mix of trains and domestic flights</li>
+                        <li class="mb-3 d-flex"><i class="fa-solid fa-circle-check text-info me-2 mt-1"></i> 4-star boutique hotels centrally located</li>
+                        <li class="mb-2 d-flex"><i class="fa-solid fa-circle-check text-info me-2 mt-1"></i> 2 small-group guided experiences</li>
+                    </ul>
+
+                    <p class="fw-bold text-secondary text-uppercase mb-3 mt-auto" style="font-size: 0.7rem;">Primary Activities</p>
+                    <div class="d-flex gap-2 mb-4">
+                        <div class="activity-icon rounded bg-secondary" style="width:45px; height:45px; background-image: url('https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=100&q=80'); background-size: cover;"></div>
+                        <div class="activity-icon rounded bg-dark" style="width:45px; height:45px; background-image: url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=100&q=80'); background-size: cover; opacity:0.8;"></div>
+                        <div class="activity-icon bg-light text-secondary rounded d-flex align-items-center justify-content-center fw-bold" style="width:45px; height:45px; font-size: 0.8rem;">+6</div>
+                    </div>
+                    
+                    <button class="btn btn-light w-100 fw-bold border py-2 mt-auto plan-btn" style="pointer-events: auto;">PREVIEW BALANCED</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Luxury Plan -->
+        <div class="plan-card-container" style="max-width: 320px; flex: 1 1 300px;">
+            <div class="card h-100 shadow-sm plan-card" style="border: 1px solid #d1d5db; min-height: 520px; cursor: pointer;" onclick="selectPlan(this)">
+                <div class="card-body p-4 d-flex flex-column" style="pointer-events: none;">
+                    <div class="d-flex align-items-center mb-3 text-secondary fw-bold" style="font-size: 0.8rem;">
+                        <i class="fa-regular fa-gem me-2 fs-6"></i> LUXURY
+                    </div>
+                    <h4 class="card-title fw-bold mb-1">Premium Escape</h4>
+                    <div class="fs-2 fw-bold mb-3">$5,200<span class="fs-6 fw-normal text-secondary"> / total est.</span></div>
+                    
+                    <hr class="bg-light border-2 border-top border-light opacity-100">
+                    
+                    <p class="fw-bold text-secondary text-uppercase mb-3 mt-3" style="font-size: 0.7rem;">Key Highlights</p>
+                    <ul class="list-unstyled mb-4" style="font-size: 0.85rem;">
+                        <li class="mb-3 d-flex"><i class="fa-solid fa-circle-check text-info me-2 mt-1"></i> Private luxury car transfers</li>
+                        <li class="mb-3 d-flex"><i class="fa-solid fa-circle-check text-info me-2 mt-1"></i> 5-star resorts and premium villas</li>
+                        <li class="mb-2 d-flex"><i class="fa-solid fa-circle-check text-info me-2 mt-1"></i> Exclusive private access tours</li>
+                    </ul>
+
+                    <p class="fw-bold text-secondary text-uppercase mb-3 mt-auto" style="font-size: 0.7rem;">Primary Activities</p>
+                    <div class="d-flex gap-2 mb-4">
+                        <div class="activity-icon rounded bg-dark" style="width:45px; height:45px; background-image: url('https://images.unsplash.com/photo-1563911302283-d2bc129e7570?w=100&q=80'); background-size: cover;"></div>
+                        <div class="activity-icon rounded bg-info" style="width:45px; height:45px; background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=100&q=80'); background-size: cover; opacity:0.8;"></div>
+                        <div class="activity-icon bg-light text-secondary rounded d-flex align-items-center justify-content-center fw-bold" style="width:45px; height:45px; font-size: 0.8rem;">+3</div>
+                    </div>
+                    
+                    <button class="btn btn-light w-100 fw-bold border py-2 mt-auto plan-btn" style="pointer-events: auto;">PREVIEW LUXURY</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script para selección y redirección -->
+    <script>
+        function selectPlan(selectedCard) {
+            // Reiniciar todas las cards a gris
+            document.querySelectorAll('.plan-card').forEach(card => {
+                card.style.borderColor = '#d1d5db';
+                card.style.borderWidth = '1px';
+                
+                // Reiniciar sus iconos y header al gris por defecto
+                let headerText = card.querySelector('.d-flex.align-items-center.mb-3');
+                if (headerText) {
+                    headerText.style.color = '';
+                    headerText.classList.add('text-secondary');
+                }
+                
+                let btn = card.querySelector('.plan-btn');
+                if (btn) {
+                    btn.classList.add('btn-light', 'text-dark');
+                    btn.style.backgroundColor = '';
+                    btn.style.color = '';
+                }
+            });
+
+            // Establecer estilos de seleccionado (Verde) en la clickeada
+            selectedCard.style.borderColor = '#006d5b';
+            selectedCard.style.borderWidth = '2px';
+
+            let headerTextSel = selectedCard.querySelector('.d-flex.align-items-center.mb-3');
+            if (headerTextSel) {
+                headerTextSel.classList.remove('text-secondary');
+                headerTextSel.style.color = '#006d5b';
+            }
+
+            let btnSel = selectedCard.querySelector('.plan-btn');
+            if (btnSel) {
+                btnSel.classList.remove('btn-light', 'text-dark');
+                btnSel.style.backgroundColor = '#006d5b';
+                btnSel.style.color = 'white';
+            }
+
+            // Simular una pequeña pausa visual y redirigir
+            setTimeout(() => {
+                window.location.href = 'itinerary';
+            }, 300);
+        }
+    </script>
+        </main>
+    </div>
+</div>
+{% endblock %}
