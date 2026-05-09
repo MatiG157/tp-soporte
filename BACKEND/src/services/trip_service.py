@@ -1,3 +1,5 @@
+import uuid
+from datetime import datetime, timedelta
 from src.models.init import db
 from src.models.trip import Viaje
 from src.models.user import Usuario
@@ -62,3 +64,57 @@ def eliminar_viaje(id_viaje):
         db.session.commit()
         return True
     return False
+
+
+def guardar_viajes_generados(id_usuario, opciones_generadas):
+    # Opcional: borrar drafts previos del usuario para no ensuciar la DB
+    Viaje.query.filter_by(id_usuario=id_usuario, estado="draft").delete()
+
+    group_id = str(uuid.uuid4())
+    viajes_creados = []
+
+    for opcion in opciones_generadas:
+        viaje = Viaje(
+            id_usuario=id_usuario,
+            destino=opcion["destino"],
+            fecha_inicio=opcion["fecha_inicio"],
+            fecha_fin=opcion["fecha_fin"],
+            tipo_viaje=opcion["tipo"],
+            costo_total_estimado=opcion.get("costo_total_estimado"),
+            group_id=group_id,
+            estado="draft"
+        )
+        db.session.add(viaje)
+        viajes_creados.append(viaje)
+
+    db.session.commit()
+    return group_id
+
+
+def obtener_drafts_activos(id_usuario):
+    # Busca el group_id más reciente
+    ultimo_viaje = Viaje.query.filter_by(id_usuario=id_usuario, estado="draft")\
+        .order_by(Viaje.created_at.desc()).first()
+
+    if not ultimo_viaje:
+        return []
+
+    return Viaje.query.filter_by(group_id=ultimo_viaje.group_id).all()
+
+
+def confirmar_viaje(id_viaje):
+    viaje_seleccionado = Viaje.query.get(id_viaje)
+    if not viaje_seleccionado or viaje_seleccionado.estado != "draft":
+        return None
+
+    # Cambiar estado a guardado
+    viaje_seleccionado.estado = "guardado"
+
+    # Borrar los otros drafts del mismo grupo
+    Viaje.query.filter(
+        Viaje.group_id == viaje_seleccionado.group_id,
+        Viaje.id_viaje != id_viaje
+    ).delete()
+
+    db.session.commit()
+    return viaje_seleccionado
