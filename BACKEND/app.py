@@ -1,5 +1,7 @@
 import os
 from flask import Flask
+from flask_cors import CORS
+from flask_cors import CORS
 from dotenv import load_dotenv
 
 # Importar 'db' desde src.models.init
@@ -16,6 +18,8 @@ from src.routes.accommodation_types_routes import accommodation_types_bp
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
+CORS(app)
 
 # Leer las variables de entorno
 DB_USER = os.getenv('DB_USER')

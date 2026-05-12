@@ -16,6 +16,7 @@
 <body>
 
     <!-- Header heredable para todas las páginas -->
+    {% if request.endpoint not in ['login', 'register'] %}
     <header class="d-flex justify-content-between align-items-center px-4 py-3 bg-white shadow-sm w-100 position-absolute top-0 z-3">
         
         <!-- Logo con link al index -->
@@ -43,6 +44,7 @@
             </div>
         </div>
     </header>
+    {% endif %}
 
     <!-- Aquí se inyectará el contenido de las demás páginas -->
     <div style="min-height: 80vh;">
@@ -92,11 +94,9 @@
             
             <div class="text-center">
                 <div class="d-flex justify-content-center gap-3 mb-3">
+                    <a href="#" class="text-white border rounded-circle d-flex align-items-center justify-content-center hover-opacity" style="width: 35px; height: 35px; text-decoration: none;"><i class="fa-brands fa-instagram"></i></a>
                     <a href="#" class="text-white border rounded-circle d-flex align-items-center justify-content-center hover-opacity" style="width: 35px; height: 35px; text-decoration: none;"><i class="fa-brands fa-facebook-f"></i></a>
                     <a href="#" class="text-white border rounded-circle d-flex align-items-center justify-content-center hover-opacity" style="width: 35px; height: 35px; text-decoration: none;"><i class="fa-brands fa-twitter"></i></a>
-                    <a href="#" class="text-white border rounded-circle d-flex align-items-center justify-content-center hover-opacity" style="width: 35px; height: 35px; text-decoration: none;"><i class="fa-solid fa-rss"></i></a>
-                    <a href="#" class="text-white border rounded-circle d-flex align-items-center justify-content-center hover-opacity" style="width: 35px; height: 35px; text-decoration: none;"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="text-white border rounded-circle d-flex align-items-center justify-content-center hover-opacity" style="width: 35px; height: 35px; text-decoration: none;"><i class="fa-solid fa-ellipsis"></i></a>
                 </div>
                 <small class="text-light opacity-75">&copy;Copyright. All rights reserved.</small>
             </div>

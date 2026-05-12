@@ -1,0 +1,233 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    height: 100%;
+}
+
+.split-screen {
+    display: flex;
+    min-height: 100vh;
+}
+
+.left-pane {
+    flex: 1;
+    background: url("imagenes/pexels-caronoir-36758238.jpg") no-repeat center center;
+    background-size: cover;
+    position: relative;
+    color: white;
+}
+
+.left-pane::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.left-content {
+    position: relative;
+    z-index: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.logo-top {
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #2ebc96;
+}
+.logo-top i { color: #2ebc96; }
+
+.bottom-text h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 20px;
+}
+
+.bottom-text p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    max-width: 450px;
+    margin-bottom: 40px;
+}
+
+.rating-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatars {
+    display: flex;
+}
+.avatars img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid #333;
+    margin-left: -10px;
+}
+.avatars img:first-child { margin-left: 0; }
+
+.rating-info {
+    font-size: 0.8rem;
+}
+
+.rating-title {
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+}
+
+.stars {
+    color: #48ebd3;
+    font-weight: bold;
+}
+.stars i { 
+    margin-right: 2px; 
+    color: #48ebd3;
+}
+
+.bottom-footer {
+    display: flex;
+    gap: 20px;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-top: auto;
+}
+.bottom-footer a { color: white; text-decoration: none; }
+
+.right-pane {
+    width: 450px;
+    background: #fafafa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right-content {
+    width: 80%;
+    max-width: 350px;
+}
+
+.right-content h2 {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 40px;
+}
+
+.underline-input {
+    border: none;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0;
+    background: transparent;
+    padding-left: 0;
+    padding-bottom: 10px;
+}
+.underline-input:focus {
+    box-shadow: none;
+    border-bottom-color: #007662;
+    background: transparent;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    cursor: pointer;
+}
+
+.terms-text {
+    font-size: 0.75rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+.terms-text a {
+    color: #007662;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signup-btn {
+    background-color: #007662;
+    border: none;
+    height: 48px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+.signup-btn:hover { background-color: #005a4b; }
+
+.divider-text {
+    text-align: center;
+    position: relative;
+}
+.divider-text::before, .divider-text::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 25%;
+    height: 1px;
+    background: #ddd;
+}
+.divider-text::before { left: 0; }
+.divider-text::after { right: 0; }
+.divider-text span {
+    background: #fafafa;
+    padding: 0 10px;
+    color: #999;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.social-login {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.social-btn {
+    flex: 1;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 500;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.social-btn:hover { background: #f0f0f0; border-color: #ddd; color: #333;}
+.facebook-btn {
+    background: #1877f2;
+    border: 1px solid #1877f2;
+    color: #fff;
+}
+.facebook-btn:hover { background: #166fe5; color: white;}
+
+.login-link {
+    text-align: center;
+    font-size: 0.9rem;
+}
+.login-link a {
+    color: #007662;
+    text-decoration: none;
+    font-weight: 600;
+}

@@ -1,8 +1,14 @@
 from src.models.init import db
 from src.models.user import Usuario
 from src.validators.user_validator import usuarios_schema
-from werkzeug.security import generate_password_hash  # Para hashear
+from werkzeug.security import generate_password_hash, check_password_hash  # Para hashear y verificar
 
+
+def verificar_login(email, contrasena_plana):
+    usuario = Usuario.query.filter_by(email=email).first()
+    if usuario and check_password_hash(usuario.contrasena, contrasena_plana):
+        return usuario
+    return None
 
 def crear_usuario(datos):
 

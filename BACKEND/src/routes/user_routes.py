@@ -1,8 +1,20 @@
 from flask import Blueprint, request, jsonify
-from src.services.user_service import crear_usuario, eliminar_usuario, actualizar_usuario
+from src.services.user_service import crear_usuario, eliminar_usuario, actualizar_usuario, verificar_login
 from marshmallow import ValidationError
 
 user_bp = Blueprint('user_bp', __name__)
+
+@user_bp.route('/login', methods=['POST'])
+def login_usuario():
+    datos = request.get_json()
+    if not datos or not datos.get('email') or not datos.get('contrasena'):
+        return jsonify({"error": "Debe proveer email y contraseña"}), 400
+    
+    usuario = verificar_login(datos['email'], datos['contrasena'])
+    if usuario:
+        return jsonify({"mensaje": "Login exitoso", "id_usuario": usuario.id_usuario}), 200
+    else:
+        return jsonify({"error": "Credenciales inválidas"}), 401
 
 @user_bp.route('/', methods=['POST'])
 def alta_usuario():
