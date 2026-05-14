@@ -1,0 +1,32 @@
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="sidebar-user">
+        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80" alt="User Profile">
+        <div>
+            <div class="fw-bold text-dark mb-0" style="font-size: 0.95rem;">Alex Rivers</div>
+            <small class="text-secondary" style="font-size: 0.75rem;">Explorer Tier</small>
+        </div>
+    </div>
+    <!-- Links de navegación -->
+    <div class="nav flex-column mb-auto mt-4">
+        <a href="/compare" class="sidebar-link {% if active_page == 'compare' %}active-link{% endif %}">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i> Compare
+        </a>
+        <a href="/itinerary" class="sidebar-link {% if active_page == 'itinerary' %}active-link{% endif %}">
+            <i class="fa-solid fa-map"></i> Itinerario
+        </a>
+        <a href="/budget" class="sidebar-link {% if active_page == 'budget' %}active-link{% endif %}">
+            <i class="fa-solid fa-piggy-bank"></i> Budget
+        </a>
+        <a href="/settings" class="sidebar-link {% if active_page == 'settings' %}active-link{% endif %}">
+            <i class="fa-solid fa-gear"></i> Settings
+        </a>
+    </div>
+
+    <!-- Bottom Button - Upgrade to Pro -->
+    <div class="mt-auto pt-4">
+        <button class="btn w-100 fw-bold rounded-3 py-2 text-white" style="background-color: var(--brand-color, #006d5b);">
+            Upgrade to Pro
+        </button>
+    </div>
+</div>

@@ -1,0 +1,121 @@
+/* CSS for Itinerary Page */
+
+.itinerary-content {
+    background-color: #ffffff;
+    max-width: 1200px;
+}
+
+/* Header & Typography */
+.text-brand {
+    color: var(--brand-color, #006d5b) !important;
+}
+.bg-brand {
+    background-color: var(--brand-color, #006d5b) !important;
+}
+.btn-brand {
+    background-color: var(--brand-color, #006d5b) !important;
+    color: #fff !important;
+}
+.btn-brand:hover {
+    background-color: #005a4b !important;
+}
+
+.fs-7 {
+    font-size: 0.85rem;
+}
+
+/* Widgets Row */
+.widget-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.widget-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.05) !important;
+}
+.widget-title {
+    letter-spacing: 0.5px;
+}
+
+/* Timeline Layout */
+.timeline-line {
+    position: absolute;
+    left: 11px;
+    top: 20px;
+    bottom: 20px;
+    width: 2px;
+    background-color: #e2e8f0;
+    z-index: 1;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 2.5rem;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: 5px;
+    top: 24px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: 3px solid #cbd5e1;
+    z-index: 2;
+}
+
+.timeline-dot.active-dot {
+    border-color: var(--brand-color, #006d5b);
+}
+
+.timeline-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.timeline-card:hover {
+    box-shadow: 0 10px 15px rgba(0,0,0,0.05) !important;
+}
+
+/* Tag Badges */
+.tag-badge {
+    font-size: 0.75rem;
+}
+.tag-sightseeing {
+    background-color: #ccfbf1;
+    color: #115e59;
+}
+.tag-activity {
+    background-color: #f1f5f9;
+    color: #475569;
+}
+.tag-food {
+    background-color: #ffedd5;
+    color: #9a3412;
+}
+
+/* Map Simulation */
+.map-marker-pulse {
+    width: 16px;
+    height: 16px;
+    background-color: #14b8a6;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 rgba(20, 184, 166, 0.4);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(20, 184, 166, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(20, 184, 166, 0);
+    }
+}
+
+/* Logistics Section */
+.logistics-card {
+    background-color: #ffffff;
+}

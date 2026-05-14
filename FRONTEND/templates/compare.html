@@ -7,78 +7,6 @@
         background-image: none !important;
         background-color: #ffffff !important;
     }
-    .page-wrapper {
-        display: flex;
-        margin-top: 72px; /* Approx header height */
-        min-height: calc(100vh - 72px);
-    }
-    .sidebar {
-        width: 260px;
-        background-color: #f9fbfb;
-        border-right: 1px solid #e2e8f0;
-        padding: 2rem 1.5rem;
-        display: flex;
-        flex-direction: column;
-    }
-    .main-content {
-        flex-grow: 1;
-        padding: 2rem;
-        background-color: #ffffff;
-    }
-    .sidebar-user {
-        display: flex;
-        align-items: center;
-        margin-bottom: 2.5rem;
-    }
-    .sidebar-user img {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-right: 12px;
-    }
-    .sidebar-link {
-        display: flex;
-        align-items: center;
-        padding: 0.75rem 1rem;
-        color: #64748b;
-        text-decoration: none;
-        border-radius: 8px;
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-        transition: all 0.2s;
-    }
-    .sidebar-link:hover {
-        background-color: #f1f5f9;
-        color: #0f172a;
-    }
-    .sidebar-link.active-link {
-        background-color: #ffffff;
-        color: var(--brand-color, #006d5b);
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        border: 1px solid #f1f5f9;
-    }
-    .sidebar-link i {
-        width: 24px;
-        text-align: center;
-        margin-right: 10px;
-        font-size: 1.1rem;
-        color: #94a3b8; /* Gris por defecto */
-        transition: color 0.2s;
-    }
-    .sidebar-link.active-link {
-        background-color: #ffffff;
-        color: var(--brand-color, #006d5b);
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        border: 1px solid #f1f5f9;
-        pointer-events: none;
-    }
-    .sidebar-link.active-link i {
-        color: var(--brand-color, #006d5b);
-    }
-    .sidebar-link:hover i {
-        color: var(--brand-color, #006d5b);
-    }
     .plan-card-container {
         max-width: 300px; /* Hacerlas menos anchas */
         margin: 0 auto;
@@ -87,23 +15,8 @@
 
 <div class="page-wrapper">
     <!-- Sidebar -->
-    <div class="sidebar">
-        <!-- Links de navegación -->
-        <div class="nav flex-column mb-auto mt-4">
-            <a href="#" class="sidebar-link active-link">
-                <i class="fa-solid fa-arrow-right-arrow-left"></i> Compare
-            </a>
-            <a href="#" class="sidebar-link">
-                <i class="fa-solid fa-map"></i> Itinerario
-            </a>
-            <a href="#" class="sidebar-link">
-                <i class="fa-solid fa-piggy-bank"></i> Budget
-            </a>
-            <a href="#" class="sidebar-link">
-                <i class="fa-solid fa-gear"></i> Settings
-            </a>
-        </div>
-    </div>
+    {% set active_page = 'compare' %}
+    {% include 'sidebar.html' %}
 
     <!-- Main Content -->
     <div class="main-content">
