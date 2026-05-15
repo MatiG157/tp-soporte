@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Carga de CSS usando las reglas de entorno estático de Flask -->
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}">
     <link rel="stylesheet" href="../static/mytrips.css">
 </head>
 <body>
@@ -47,7 +48,7 @@
     {% endif %}
 
     <!-- Aquí se inyectará el contenido de las demás páginas -->
-    <div style="min-height: 80vh;">
+    <div style="min-height: 80vh; padding-top: 72px;">
     {% block body %} 
     {% endblock %}
     </div>
