@@ -43,7 +43,10 @@ def get_viajes_usuario(id_usuario):
         "fecha_inicio": v.fecha_inicio.isoformat(),
         "fecha_fin": v.fecha_fin.isoformat(),
         "tipo_viaje": v.tipo_viaje,
-        "costo_total_estimado": v.costo_total_estimado
+        "costo_total_estimado": v.costo_total_estimado,
+        "estado": v.estado,
+        "created_at": v.created_at.isoformat() if v.created_at else None,
+        "imagen": v.imagen
     } for v in viajes]
 
     return jsonify(resultado), 200
@@ -91,6 +94,7 @@ def baja_viaje(id_viaje):
         return jsonify({"mensaje": "Viaje eliminado"}), 200
     return jsonify({"error": "Viaje no encontrado"}), 404
 
+
 @trip_bp.route('/generate', methods=['POST'])
 def generate_viajes():
     datos = request.get_json()
@@ -100,19 +104,20 @@ def generate_viajes():
     opciones = datos.get('opciones')
     if not id_usuario or not opciones:
         return jsonify({"error": "Faltan datos requeridos (id_usuario, opciones)"}), 400
-    
+
     try:
         group_id = guardar_viajes_generados(id_usuario, opciones)
         return jsonify({"mensaje": "Viajes generados", "group_id": group_id}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 @trip_bp.route('/usuario/<int:id_usuario>/drafts', methods=['GET'])
 def get_drafts_usuario(id_usuario):
     viajes = obtener_drafts_activos(id_usuario)
     if not viajes:
         return jsonify({"mensaje": "No hay drafts activos"}), 404
-        
+
     resultado = [{
         "id_viaje": v.id_viaje,
         "destino": v.destino,
@@ -125,6 +130,7 @@ def get_drafts_usuario(id_usuario):
     } for v in viajes]
     return jsonify(resultado), 200
 
+
 @trip_bp.route('/<int:id_viaje>/select', methods=['POST'])
 def select_viaje(id_viaje):
     try:
@@ -134,4 +140,3 @@ def select_viaje(id_viaje):
         return jsonify({"mensaje": "Viaje confirmado", "id_viaje": viaje.id_viaje}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
