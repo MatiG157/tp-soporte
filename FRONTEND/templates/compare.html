@@ -123,14 +123,15 @@
     <div class="d-flex flex-wrap justify-content-center align-items-stretch mt-5 gap-3">
         
         <!-- Economy Plan -->
+        {% if viajes_por_tipo.get('Economy') %}
         <div class="plan-card-container" style="max-width: 320px; flex: 1 1 300px;">
-            <div class="card h-100 shadow-sm plan-card" style="border: 1px solid #d1d5db; min-height: 520px; cursor: pointer;" onclick="selectPlan(this)">
+            <div class="card h-100 shadow-sm plan-card" style="border: 1px solid #d1d5db; min-height: 520px; cursor: pointer;" onclick="selectPlan(this, {{ viajes_por_tipo['Economy'].id_viaje }})">
                 <div class="card-body p-4 d-flex flex-column" style="pointer-events: none;">
                     <div class="d-flex align-items-center mb-3 text-secondary fw-bold" style="font-size: 0.8rem;">
                         <i class="fa-solid fa-person-walking-luggage me-2 fs-6"></i> ECONOMY
                     </div>
                     <h4 class="card-title fw-bold mb-1">Local Explorer</h4>
-                    <div class="fs-2 fw-bold mb-3">$1,250<span class="fs-6 fw-normal text-secondary"> / total est.</span></div>
+                    <div class="fs-2 fw-bold mb-3">${{ viajes_por_tipo['Economy'].costo_total_estimado }}<span class="fs-6 fw-normal text-secondary"> / total est.</span></div>
                     
                     <hr class="bg-light border-2 border-top border-light opacity-100">
                     
@@ -141,21 +142,16 @@
                         <li class="mb-2 d-flex"><i class="fa-solid fa-circle-check text-info me-2 mt-1"></i> Self-guided walking tours</li>
                     </ul>
 
-                    <p class="fw-bold text-secondary text-uppercase mb-3 mt-auto" style="font-size: 0.7rem;">Primary Activities</p>
-                    <div class="d-flex gap-2 mb-4">
-                        <div class="activity-icon bg-secondary rounded text-white d-flex align-items-center justify-content-center" style="width:45px; height:45px; background-image: url('https://images.unsplash.com/photo-1510251197878-a2e6d2cb590c?w=100&q=80'); background-size: cover;"></div>
-                        <div class="activity-icon bg-dark text-white rounded d-flex align-items-center justify-content-center opacity-75" style="width:45px; height:45px; line-height: 1; font-size: 0.45rem;">ACTIVITY</div>
-                        <div class="activity-icon bg-light text-secondary rounded d-flex align-items-center justify-content-center fw-bold" style="width:45px; height:45px; font-size: 0.8rem;">+4</div>
-                    </div>
-                    
-                    <button class="btn btn-light w-100 fw-bold border py-2 mt-auto plan-btn" style="pointer-events: auto;">PREVIEW ECONOMY</button>
+                    <button class="btn btn-light w-100 fw-bold border py-2 mt-auto plan-btn" style="pointer-events: auto;" onclick="event.stopPropagation(); selectPlan(this.closest('.card'), {{ viajes_por_tipo['Economy'].id_viaje }})">SELECT ECONOMY</button>
                 </div>
             </div>
         </div>
+        {% endif %}
 
         <!-- Balanced Plan (Recommended) -->
+        {% if viajes_por_tipo.get('Balanced') %}
         <div class="plan-card-container position-relative" style="max-width: 320px; flex: 1 1 300px;">
-            <div class="card h-100 shadow plan-card recommended-card" style="border: 1px solid #d1d5db; min-height: 520px; cursor: pointer;" onclick="selectPlan(this)">
+            <div class="card h-100 shadow plan-card recommended-card" style="border: 1px solid #d1d5db; min-height: 520px; cursor: pointer;" onclick="selectPlan(this, {{ viajes_por_tipo['Balanced'].id_viaje }})">
                 <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill px-3 py-1" style="background-color: var(--brand-color, #006d5b); font-size: 0.75rem; z-index: 10;">
                     RECOMMENDED
                 </span>
@@ -164,7 +160,7 @@
                         <i class="fa-solid fa-scale-balanced me-2 fs-6"></i> BALANCED
                     </div>
                     <h4 class="card-title fw-bold mb-1">Guided Discovery</h4>
-                    <div class="fs-2 fw-bold mb-3">$2,850<span class="fs-6 fw-normal text-secondary"> / total est.</span></div>
+                    <div class="fs-2 fw-bold mb-3">${{ viajes_por_tipo['Balanced'].costo_total_estimado }}<span class="fs-6 fw-normal text-secondary"> / total est.</span></div>
                     
                     <hr class="bg-light border-2 border-top border-light opacity-100">
                     
@@ -175,27 +171,22 @@
                         <li class="mb-2 d-flex"><i class="fa-solid fa-circle-check text-info me-2 mt-1"></i> 2 small-group guided experiences</li>
                     </ul>
 
-                    <p class="fw-bold text-secondary text-uppercase mb-3 mt-auto" style="font-size: 0.7rem;">Primary Activities</p>
-                    <div class="d-flex gap-2 mb-4">
-                        <div class="activity-icon rounded bg-secondary" style="width:45px; height:45px; background-image: url('https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=100&q=80'); background-size: cover;"></div>
-                        <div class="activity-icon rounded bg-dark" style="width:45px; height:45px; background-image: url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=100&q=80'); background-size: cover; opacity:0.8;"></div>
-                        <div class="activity-icon bg-light text-secondary rounded d-flex align-items-center justify-content-center fw-bold" style="width:45px; height:45px; font-size: 0.8rem;">+6</div>
-                    </div>
-                    
-                    <button class="btn btn-light w-100 fw-bold border py-2 mt-auto plan-btn" style="pointer-events: auto;">PREVIEW BALANCED</button>
+                    <button class="btn btn-light w-100 fw-bold border py-2 mt-auto plan-btn" style="pointer-events: auto;" onclick="event.stopPropagation(); selectPlan(this.closest('.card'), {{ viajes_por_tipo['Balanced'].id_viaje }})">SELECT BALANCED</button>
                 </div>
             </div>
         </div>
+        {% endif %}
 
         <!-- Luxury Plan -->
+        {% if viajes_por_tipo.get('Luxury') %}
         <div class="plan-card-container" style="max-width: 320px; flex: 1 1 300px;">
-            <div class="card h-100 shadow-sm plan-card" style="border: 1px solid #d1d5db; min-height: 520px; cursor: pointer;" onclick="selectPlan(this)">
+            <div class="card h-100 shadow-sm plan-card" style="border: 1px solid #d1d5db; min-height: 520px; cursor: pointer;" onclick="selectPlan(this, {{ viajes_por_tipo['Luxury'].id_viaje }})">
                 <div class="card-body p-4 d-flex flex-column" style="pointer-events: none;">
                     <div class="d-flex align-items-center mb-3 text-secondary fw-bold" style="font-size: 0.8rem;">
                         <i class="fa-regular fa-gem me-2 fs-6"></i> LUXURY
                     </div>
                     <h4 class="card-title fw-bold mb-1">Premium Escape</h4>
-                    <div class="fs-2 fw-bold mb-3">$5,200<span class="fs-6 fw-normal text-secondary"> / total est.</span></div>
+                    <div class="fs-2 fw-bold mb-3">${{ viajes_por_tipo['Luxury'].costo_total_estimado }}<span class="fs-6 fw-normal text-secondary"> / total est.</span></div>
                     
                     <hr class="bg-light border-2 border-top border-light opacity-100">
                     
@@ -206,23 +197,21 @@
                         <li class="mb-2 d-flex"><i class="fa-solid fa-circle-check text-info me-2 mt-1"></i> Exclusive private access tours</li>
                     </ul>
 
-                    <p class="fw-bold text-secondary text-uppercase mb-3 mt-auto" style="font-size: 0.7rem;">Primary Activities</p>
-                    <div class="d-flex gap-2 mb-4">
-                        <div class="activity-icon rounded bg-dark" style="width:45px; height:45px; background-image: url('https://images.unsplash.com/photo-1563911302283-d2bc129e7570?w=100&q=80'); background-size: cover;"></div>
-                        <div class="activity-icon rounded bg-info" style="width:45px; height:45px; background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=100&q=80'); background-size: cover; opacity:0.8;"></div>
-                        <div class="activity-icon bg-light text-secondary rounded d-flex align-items-center justify-content-center fw-bold" style="width:45px; height:45px; font-size: 0.8rem;">+3</div>
-                    </div>
-                    
-                    <button class="btn btn-light w-100 fw-bold border py-2 mt-auto plan-btn" style="pointer-events: auto;">PREVIEW LUXURY</button>
+                    <button class="btn btn-light w-100 fw-bold border py-2 mt-auto plan-btn" style="pointer-events: auto;" onclick="event.stopPropagation(); selectPlan(this.closest('.card'), {{ viajes_por_tipo['Luxury'].id_viaje }})">SELECT LUXURY</button>
                 </div>
             </div>
         </div>
+        {% endif %}
 
     </div>
 
+    <!-- Hidden form for submission -->
+    <form id="select-trip-form" method="POST" style="display: none;">
+    </form>
+
     <!-- Script para selección y redirección -->
     <script>
-        function selectPlan(selectedCard) {
+        function selectPlan(selectedCard, id_viaje) {
             // Reiniciar todas las cards a gris
             document.querySelectorAll('.plan-card').forEach(card => {
                 card.style.borderColor = '#d1d5db';
@@ -262,7 +251,9 @@
 
             // Simular una pequeña pausa visual y redirigir
             setTimeout(() => {
-                window.location.href = 'itinerary';
+                let form = document.getElementById('select-trip-form');
+                form.action = "{{ url_for('select_trip', id_viaje=0) }}".replace('0', id_viaje);
+                form.submit();
             }, 300);
         }
     </script>

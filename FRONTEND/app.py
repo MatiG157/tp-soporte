@@ -5,8 +5,11 @@ import requests
 
 load_dotenv()
 
+from datetime import timedelta
+
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'dev-secret-key')
+app.permanent_session_lifetime = timedelta(days=365) # Sesion dura para siempre o mucho tiempo
 
 # URL base del backend
 BACKEND_URL = os.getenv('BACKEND_URL', 'http://localhost:5000')
@@ -17,7 +20,8 @@ BACKEND_URL = os.getenv('BACKEND_URL', 'http://localhost:5000')
 @app.route('/')
 def index():
     """Landing page / Home"""
-    return render_template('index.html')
+    # Pasamos el user_id para que Jinja sepa si está logueado o no
+    return render_template('index.html', user_id=session.get('user_id'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -45,14 +49,31 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    """Login de usuario (simplificado, sin JWT por ahora)"""
+    """Login de usuario"""
     if request.method == 'POST':
-        # Placeholder: acá iría la lógica de autenticación real
-        # cuando el backend tenga el endpoint /login
-        email = request.form.get('email')
-        session['user_email'] = email
-        session['user_id'] = 1  # temporal hasta tener auth real
-        return redirect(url_for('dashboard'))
+        # Soporte para fetch (JSON) o form subido normal
+        data = request.get_json() if request.is_json else request.form
+        email = data.get('email')
+        contrasena = data.get('contrasena')
+        try:
+            resp = requests.post(f'{BACKEND_URL}/usuarios/login', json={'email': email, 'contrasena': contrasena})
+            if resp.status_code == 200:
+                user_data = resp.json()
+                session.permanent = True # Hace que la sesion sea permanente
+                session['user_email'] = email
+                session['user_id'] = user_data.get('id_usuario')
+                if request.is_json:
+                    return jsonify({"success": True})
+                return redirect(url_for('compare')) # dashboard or whatever main route
+            else:
+                error = resp.json().get('error', 'Credenciales inválidas')
+                if request.is_json:
+                    return jsonify({"error": error}), 401
+                return render_template('login.html', error=error)
+        except requests.exceptions.ConnectionError:
+            if request.is_json:
+                return jsonify({"error": 'No se pudo conectar con el servidor.'}), 500
+            return render_template('login.html', error='No se pudo conectar con el servidor.')
 
     return render_template('login.html')
 
@@ -70,9 +91,90 @@ def mytrips():
 
 @app.route('/compare')
 def compare():
-    #if 'user_id' not in session:
-        #return redirect(url_for('login'))
-    return render_template('compare.html') 
+    if 'user_id' not in session:
+        # Prevent default 1 if not logged in
+        return redirect(url_for('login'))
+        
+    user_id = session.get('user_id')
+    drafts = []
+    try:
+        resp = requests.get(f'{BACKEND_URL}/viajes/usuario/{user_id}/drafts')
+        if resp.status_code == 200:
+            drafts = resp.json()
+    except requests.exceptions.ConnectionError:
+        pass
+
+    # Organizar drafts por tipo_viaje
+    viajes_por_tipo = {
+        'Economy': None,
+        'Balanced': None,
+        'Luxury': None
+    }
+    for draft in drafts:
+        if draft.get('tipo_viaje') in viajes_por_tipo:
+            viajes_por_tipo[draft.get('tipo_viaje')] = draft
+
+    return render_template('compare.html', viajes_por_tipo=viajes_por_tipo)
+
+@app.route('/generate_trips', methods=['GET'])
+def generate_trips():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    user_id = session.get('user_id')
+    
+    # Obtener parámetros del query
+    destino = request.args.get('destino')
+    fecha_inicio = request.args.get('fecha_inicio')
+    fecha_fin = request.args.get('fecha_fin')
+    
+    # Crear 3 opciones genéricas 
+    opciones = [
+        {
+            "destino": destino or "Destino Desconocido",
+            "fecha_inicio": fecha_inicio or "2024-01-01",
+            "fecha_fin": fecha_fin or "2024-01-07",
+            "tipo": "Economy",
+            "costo_total_estimado": 1000.0
+        },
+        {
+            "destino": destino or "Destino Desconocido",
+            "fecha_inicio": fecha_inicio or "2024-01-01",
+            "fecha_fin": fecha_fin or "2024-01-07",
+            "tipo": "Balanced",
+            "costo_total_estimado": 2500.0
+        },
+        {
+            "destino": destino or "Destino Desconocido",
+            "fecha_inicio": fecha_inicio or "2024-01-01",
+            "fecha_fin": fecha_fin or "2024-01-07",
+            "tipo": "Luxury",
+            "costo_total_estimado": 5000.0
+        }
+    ]
+    
+    datos = {
+        "id_usuario": user_id,
+        "opciones": opciones
+    }
+    
+    try:
+        requests.post(f'{BACKEND_URL}/viajes/generate', json=datos)
+    except requests.exceptions.ConnectionError:
+        pass
+        
+    return redirect(url_for('compare'))
+
+@app.route('/select_trip/<int:id_viaje>', methods=['POST'])
+def select_trip(id_viaje):
+    try:
+        resp = requests.post(f'{BACKEND_URL}/viajes/{id_viaje}/select')
+        if resp.status_code == 200:
+            return redirect(url_for('itinerary', trip_id=id_viaje))
+    except requests.exceptions.ConnectionError:
+        pass
+    return redirect(url_for('compare'))
+
 
 
 @app.route('/itinerary')

@@ -12,7 +12,7 @@
     </div>
 
     <!-- Form Card -->
-    <form class="card bg-white p-4 rounded-4 shadow-lg w-100" style="max-width: 800px;" id="trip-form" action="{{ url_for('compare') }}" method="GET">
+    <form class="card bg-white p-4 rounded-4 shadow-lg w-100" style="max-width: 800px;" id="trip-form" action="{{ url_for('generate_trips') }}" method="GET">
 
         <!-- Destino -->
         <div class="row g-3 mb-3">
@@ -266,10 +266,43 @@
         </div>
 
         <!-- Submit Button -->
+        {% if user_id %}
         <button type="submit" class="btn btn-brand w-100 py-3 fw-bold rounded-3 mt-2 fs-5 text-white"
             style="background-color: var(--brand-color, #006d5b);">
             <i class="fa-regular fa-compass me-2"></i> Create Trip
         </button>
+        {% else %}
+        <button type="button" class="btn btn-brand w-100 py-3 fw-bold rounded-3 mt-2 fs-5 text-white"
+            style="background-color: var(--brand-color, #006d5b);"
+            data-bs-toggle="modal" data-bs-target="#loginRequiredModal">
+            <i class="fa-regular fa-compass me-2"></i> Create Trip
+        </button>
+        {% endif %}
     </form>
 </main>
+
+<!-- Login Required Modal -->
+<div class="modal fade" id="loginRequiredModal" tabindex="-1" aria-labelledby="loginRequiredModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header border-0 pb-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center px-5 pb-5 mt-2">
+                <div class="mb-4">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-3" style="width: 80px; height: 80px;">
+                        <i class="fa-solid fa-lock fs-1" style="color: var(--brand-color, #006d5b);"></i>
+                    </div>
+                    <h3 class="fw-bold mb-2">Sign in Required</h3>
+                    <p class="text-secondary">Please sign in or create a free account to start planning your next journey with TravelPlanner.</p>
+                </div>
+                <div class="d-grid gap-3">
+                    <a href="{{ url_for('login') }}" class="btn py-3 fw-bold rounded-3 text-white" style="background-color: var(--brand-color, #006d5b);">Sign In Now</a>
+                    <a href="{{ url_for('register') }}" class="btn btn-outline-secondary py-3 fw-bold rounded-3">Create Free Account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

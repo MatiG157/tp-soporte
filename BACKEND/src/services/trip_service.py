@@ -67,7 +67,7 @@ def eliminar_viaje(id_viaje):
 
 
 def guardar_viajes_generados(id_usuario, opciones_generadas):
-    # Opcional: borrar drafts previos del usuario para no ensuciar la DB
+    # Borrar drafts previos del usuario para no ensuciar la DB y limpiar antiguos (por ejemplo >24h o todos los drafts anteriores)
     Viaje.query.filter_by(id_usuario=id_usuario, estado="draft").delete()
 
     group_id = str(uuid.uuid4())
