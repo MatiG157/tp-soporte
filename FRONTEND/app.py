@@ -111,34 +111,53 @@ def mytrips():
             viajes_guardados = [
                 v for v in viajes_data if v.get('estado') == 'guardado']
 
-            # Sort by created_at descending
-            viajes_guardados.sort(key=lambda x: x.get(
-                'created_at') or '', reverse=True)
-
             hoy = date.today()
 
-            for index, v in enumerate(viajes_guardados):
+            # Ordenar por fecha de inicio descendente (mayor a la izquierda)
+            viajes_guardados.sort(key=lambda x: datetime.fromisoformat(x['fecha_inicio']).date() if x.get('fecha_inicio') else date.min, reverse=True)
+
+            # Para identificar last trip y upcoming trip, encontramos los candidatos
+            last_trip = None
+            upcoming_trip = None
+            
+            # Buscar last trip: end date más cercano a hoy en el pasado (máxima f_fin < hoy)
+            past_trips = [v for v in viajes_guardados if datetime.fromisoformat(v['fecha_fin']).date() < hoy]
+            if past_trips:
+                last_trip = max(past_trips, key=lambda x: datetime.fromisoformat(x['fecha_fin']).date())
+                
+            # Buscar upcoming trip: start date más cercano en el futuro (mínima f_inicio > hoy)
+            future_trips = [v for v in viajes_guardados if datetime.fromisoformat(v['fecha_inicio']).date() > hoy]
+            if future_trips:
+                upcoming_trip = min(future_trips, key=lambda x: datetime.fromisoformat(x['fecha_inicio']).date())
+
+            for v in viajes_guardados:
                 f_inicio = datetime.fromisoformat(v['fecha_inicio']).date()
                 f_fin = datetime.fromisoformat(v['fecha_fin']).date()
 
-                # Default logic
+                es_last = (v == last_trip)
+                es_upcoming = (v == upcoming_trip)
+                es_current = (f_inicio <= hoy <= f_fin)
+
+                # Definimos el flag fundamental de estado para el filtro
                 if f_fin < hoy:
-                    v['status_label'] = 'Past Trip'
-                    v['status_class'] = 'bg-secondary'
+                    v['filter_class'] = 'past-trip'
                     v['is_past'] = True
                 elif f_inicio > hoy:
-                    v['status_label'] = 'Next Trip'
-                    v['status_class'] = 'bg-primary'
+                    v['filter_class'] = 'next-trip'
                     v['is_past'] = False
                 else:
-                    v['status_label'] = 'Current Trip'
-                    v['status_class'] = 'bg-success'
+                    v['filter_class'] = 'current-trip'
                     v['is_past'] = False
 
-                # El mas nuevo (index == 0) le ponemos 'New Trip' si no es Past Trip (o simplemente sobreecribimos? "al mas nuevo new trip")
-                if index == 0 and not v.get('is_past') and v['status_label'] != 'Current Trip':
-                    v['status_label'] = 'New Trip'
-                    v['status_class'] = 'bg-info text-dark'
+                # Asignamos la etiqueta
+                if es_current:
+                    v['status_label'] = 'current trip'
+                elif es_upcoming:
+                    v['status_label'] = 'upcoming trip'
+                elif es_last:
+                    v['status_label'] = 'last trip'
+                else:
+                    v['status_label'] = ''
 
                 v['fecha_inicio'] = f_inicio.strftime('%d/%m/%Y')
                 v['fecha_fin'] = f_fin.strftime('%d/%m/%Y')

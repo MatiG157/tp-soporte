@@ -44,30 +44,48 @@
 
 <!-- Main Content -->
 <main class="container pt-5 mt-5 pb-5 px-lg-5">
-    <h1 class="trips-title" data-i18n="mytrips_title">My Trips</h1>
-    <p class="trips-subtitle" data-i18n="mytrips_subtitle">Your upcoming and past adventures.</p>
+    <div class="d-flex align-items-center mt-5">
+        <h1 class="trips-title mt-0 mb-0" data-i18n="mytrips_title">My Trips</h1>
+        <div class="dropdown ms-3">
+            <button class="btn dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="color: var(--brand-color, #006d5b); border-color: var(--brand-color, #006d5b);">
+                <i class="fa-solid fa-filter"></i> Filter
+            </button>
+            <ul class="dropdown-menu border-0 shadow-sm" aria-labelledby="filterDropdown">
+                <li><a class="dropdown-item filter-opt" href="#" data-filter="all" data-label="All trips">All trips</a></li>
+                <li><a class="dropdown-item filter-opt" href="#" data-filter="current-trip" data-label="Current trips">Current trips</a></li>
+                <li><a class="dropdown-item filter-opt" href="#" data-filter="past-trip" data-label="Past trips">Past trips</a></li>
+                <li><a class="dropdown-item filter-opt" href="#" data-filter="next-trip" data-label="Next trips">Next trips</a></li>
+            </ul>
+        </div>
+    </div>
+    <p class="trips-subtitle-mod mb-2 text-secondary" style="font-size: 1.1rem;" data-i18n="mytrips_subtitle">Your upcoming, current and past adventures.</p>
 
-    <div class="row g-4 mt-1">
+    <!-- Filtros de viajes (Chips) -->
+    <div class="mb-4" id="filter-chip-container" style="min-height: 32px;">
+        <span class="badge rounded-pill align-items-center px-3 py-2 text-white" id="active-chip" style="background-color: rgba(0, 109, 91, 0.7); backdrop-filter: blur(6px); font-weight: 500; font-size: 0.9rem;">
+            <i class="fa-solid fa-xmark me-2 text-white" style="cursor:pointer; display:none;" id="clear-filter-btn"></i>
+            <span id="chip-text">All trips</span>
+        </span>
+    </div>
+
+    <div class="row g-4 mt-1" id="trips-container">
         {% for viaje in viajes %}
         <!-- Trip Card -->
-        <div class="col-12 col-md-6 col-lg-4">
+        <div class="col-12 col-md-6 col-lg-4 trip-item {{ viaje.filter_class }}">
             <div class="trip-card d-block position-relative {% if viaje.is_past %}past-trip{% endif %}">
                 <a href="{{ url_for('itinerary') }}" class="text-decoration-none">
                     <div class="trip-card-bg" style="background-image: url('{{ viaje.imagen or 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' }}');"></div>
                     <div class="trip-card-overlay">
-                        {% if viaje.status_label == 'New Trip' %}
-                            <span class="badge-custom badge-new mb-2 d-inline-block text-white" style="background-color: var(--brand-color, #006d5b); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;"><i class="bi bi-star-fill me-1"></i data-i18n="mytrips_new"> New Trip</span>
-                        {% elif viaje.status_label == 'Current Trip' %}
-                            <span class="badge-custom mb-2 d-inline-block text-white fw-bold" style="background-color: #0dcaf0; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;"><i class="fa-solid fa-plane-departure me-1"></i data-i18n="mytrips_current"> Current Trip</span>
-                        {% elif viaje.status_label == 'Past Trip' %}
-                            <span class="badge-custom badge-past mb-2 d-inline-block text-white" style="background-color: #6c757d; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;" data-i18n="mytrips_past">Past Trip</span>
-                        {% else %}
-                            <span class="badge {{ viaje.status_class }} mb-2 d-inline-block" style="padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;">{{ viaje.status_label }}</span>
+                        {% if viaje.status_label == 'current trip' %}
+                            <span class="badge-custom mb-2 d-inline-block text-white fw-bold" style="background-color: rgba(13, 202, 240, 0.7); backdrop-filter: blur(6px); padding: 2px 10px; border-radius: 20px; font-size: 0.65rem; text-transform: uppercase;"><i class="fa-solid fa-plane me-1"></i>Current Trip</span>
+                        {% elif viaje.status_label == 'upcoming trip' %}
+                            <span class="badge-custom mb-2 d-inline-block text-white" style="background-color: rgba(25, 135, 84, 0.7); backdrop-filter: blur(6px); padding: 2px 10px; border-radius: 20px; font-size: 0.65rem; text-transform: uppercase;"><i class="fa-solid fa-plane-departure me-1"></i>Upcoming Trip</span>
+                        {% elif viaje.status_label == 'last trip' %}
+                            <span class="badge-custom mb-2 d-inline-block text-white" style="background-color: rgba(108, 117, 125, 0.7); backdrop-filter: blur(6px); padding: 2px 10px; border-radius: 20px; font-size: 0.65rem; text-transform: uppercase;"><i class="fa-solid fa-plane-arrival me-1"></i>Last Trip</span>
                         {% endif %}
                         <div>
-                            <span class="trip-date"><i class="bi bi-calendar3 me-1"></i> {{ viaje.fecha_inicio }} - {{ viaje.fecha_fin }}</span>
+                            <span class="trip-date"><i class="fa-regular fa-calendar me-1"></i> {{ viaje.fecha_inicio }} - {{ viaje.fecha_fin }}</span>
                             <div class="trip-title">{{ viaje.destino }}</div>
-                            <div class="trip-travelers"><i class="bi bi-tag-fill me-1"></i> {{ viaje.tipo_viaje }}</div>
                         </div>
                     </div>
                 </a>
@@ -99,5 +117,46 @@
 
     </div>
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const filterOpts = document.querySelectorAll('.filter-opt');
+        const tripItems = document.querySelectorAll('.trip-item');
+        const chipText = document.getElementById('chip-text');
+        const clearFilterBtn = document.getElementById('clear-filter-btn');
+
+        function applyFilter(filter, label) {
+            // Update Chip UI
+            chipText.textContent = label;
+            if (filter === 'all') {
+                clearFilterBtn.style.display = 'none';
+            } else {
+                clearFilterBtn.style.display = 'inline-block';
+            }
+
+            // Filter items
+            tripItems.forEach(item => {
+                if (filter === 'all' || item.classList.contains(filter)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        filterOpts.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const filter = btn.getAttribute('data-filter');
+                const label = btn.getAttribute('data-label');
+                applyFilter(filter, label);
+            });
+        });
+
+        clearFilterBtn.addEventListener('click', () => {
+            applyFilter('all', 'All trips');
+        });
+    });
+</script>
 
 {% endblock %}
