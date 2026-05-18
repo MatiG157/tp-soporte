@@ -4,7 +4,7 @@
         <a href="/compare" class="sidebar-link {% if active_page == 'compare' %}active-link{% endif %}" data-i18n="sidebar_compare">
             <i class="fa-solid fa-arrow-right-arrow-left"></i> Compare
         </a>
-        <a href="/itinerary" class="sidebar-link {% if active_page == 'itinerary' %}active-link{% endif %}" data-i18n="sidebar_itinerary">
+        <a href="{% if viaje %}/itinerary/{{ viaje.id_viaje }}{% else %}#{% endif %}" class="sidebar-link {% if active_page == 'itinerary' %}active-link{% endif %}" data-i18n="sidebar_itinerary">
             <i class="fa-solid fa-map"></i> Itinerary
         </a>
         <a href="/budget" class="sidebar-link {% if active_page == 'budget' %}active-link{% endif %}" data-i18n="sidebar_budget">

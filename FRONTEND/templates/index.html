@@ -22,8 +22,11 @@
                     <div class="flex-grow-1 ms-2">
                         <label class="form-label-small mb-1 d-block text-uppercase fw-bold"
                             style="font-size: 0.75rem;" data-i18n="index_origin">Origin</label>
-                        <input type="text" class="form-control input-clean p-0 border-0 bg-transparent shadow-none"
-                            placeholder="From?" data-i18n-placeholder="index_ph_origin">
+                        <div class="position-relative">
+                            <input type="text" id="origin-input" class="form-control input-clean p-0 border-0 bg-transparent shadow-none"
+                                placeholder="From?" data-i18n-placeholder="index_ph_origin" autocomplete="off">
+                            <ul id="origin-options" class="custom-autocomplete-list"></ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -34,8 +37,11 @@
                     <div class="flex-grow-1 ms-2">
                         <label class="form-label-small mb-1 d-block text-uppercase fw-bold"
                             style="font-size: 0.75rem;" data-i18n="index_dest">Destination</label>
-                        <input type="text" class="form-control input-clean p-0 border-0 bg-transparent shadow-none"
-                            placeholder="Where to?" data-i18n-placeholder="index_ph_dest">
+                        <div class="position-relative">
+                            <input type="text" id="dest-input" class="form-control input-clean p-0 border-0 bg-transparent shadow-none"
+                                placeholder="Where to?" data-i18n-placeholder="index_ph_dest" autocomplete="off">
+                            <ul id="dest-options" class="custom-autocomplete-list"></ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -304,5 +310,85 @@
         </div>
     </div>
 </div>
+
+<!-- Autocomplete con API Gratuita Photon (Komoot / OpenStreetMap) -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const originInput = document.getElementById('origin-input');
+        const destInput = document.getElementById('dest-input');
+        const originList = document.getElementById('origin-options');
+        const destList = document.getElementById('dest-options');
+
+        let timeoutId;
+
+        // Función para buscar ciudades en la API de Photon
+        function fetchCities(query, listElement, inputElement) {
+            if (!query || query.length < 3) {
+                listElement.innerHTML = '';
+                listElement.classList.remove('show');
+                return;
+            }
+            
+            // Cancelar busquedas previas para no saturar la API
+            clearTimeout(timeoutId);
+            
+            timeoutId = setTimeout(() => {
+                // Buscamos buscando solo lugares etiquetados como "city" o "town" en OSM
+                const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&osm_tag=place:city&osm_tag=place:town&limit=5`;
+                
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        listElement.innerHTML = ''; // Limpiamos opciones previas
+                        if (data.features && data.features.length > 0) {
+                            data.features.forEach(feature => {
+                                const props = feature.properties;
+                                // Construmos el "Nombre, Estado, País"
+                                const city = props.name;
+                                const state = props.state ? `, ${props.state}` : '';
+                                const country = props.country ? `, ${props.country}` : '';
+                                const fullName = `${city}${state}${country}`;
+                                
+                                const li = document.createElement('li');
+                                li.innerHTML = `<i class="fa-solid fa-location-dot me-2"></i> ${fullName}`;
+                                li.addEventListener('click', function() {
+                                    inputElement.value = fullName;
+                                    listElement.innerHTML = '';
+                                    listElement.classList.remove('show');
+                                });
+                                listElement.appendChild(li);
+                            });
+                            listElement.classList.add('show');
+                        } else {
+                            listElement.classList.remove('show');
+                        }
+                    })
+                    .catch(err => console.error("Error cargando ciudades: ", err));
+            }, 500); // 500ms de de-bounce
+        }
+
+        originInput.addEventListener('input', (e) => fetchCities(e.target.value, originList, originInput));
+        destInput.addEventListener('input', (e) => fetchCities(e.target.value, destList, destInput));
+        
+        // Evitar submit al apretar Enter si está eligiendo la ciudad
+        const preventEnter = function(e) {
+            if (e.keyCode === 13) {
+                e.preventDefault();
+            }
+        };
+        originInput.addEventListener("keydown", preventEnter);
+        destInput.addEventListener("keydown", preventEnter);
+
+        // Ocultar listas al hacer click afuera
+        document.addEventListener('click', function(e) {
+            if (!originInput.contains(e.target) && !originList.contains(e.target)) {
+                originList.classList.remove('show');
+            }
+            if (!destInput.contains(e.target) && !destList.contains(e.target)) {
+                destList.classList.remove('show');
+            }
+        });
+    });
+</script>
 
 {% endblock %}

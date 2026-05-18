@@ -78,3 +78,44 @@ body {
     align-items: center;
     flex-grow: 1;
 }
+
+/* Autocomplete personalizado */
+.position-relative {
+    position: relative;
+}
+.custom-autocomplete-list {
+    position: absolute;
+    top: 100%;
+    left: -35px; /* Compensa el padding del ícono */
+    width: calc(100% + 35px); /* Ocupa el ancho ajustado */
+    background-color: white;
+    border-radius: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 15px 0 0 0;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 1050;
+    display: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.custom-autocomplete-list.show {
+    display: block;
+}
+.custom-autocomplete-list li {
+    padding: 12px 15px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #444;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s ease;
+}
+.custom-autocomplete-list li:last-child {
+    border-bottom: none;
+}
+.custom-autocomplete-list li:hover {
+    background-color: #f8f9fa;
+    color: var(--brand-color);
+    font-weight: bold;
+    padding-left: 20px;
+}

@@ -192,10 +192,8 @@
             highlightCard(selectedCard);
             sessionStorage.setItem('selectedViajeId', id_viaje);
             
-            // Simular una pequeña pausa y redirigir al itinerary (hardcodeado por ahora sin ID específico)
-            // Puedes agregar '?id=' + id_viaje en el futuro si lo necesitas
             setTimeout(() => {
-                window.location.href = "{{ url_for('itinerary') }}"; 
+                window.location.href = "/itinerary/" + id_viaje;
             }, 300);
         }
 
@@ -207,7 +205,7 @@
             // Simular una pequeña pausa visual y redirigir al guardado en base de datos
             setTimeout(() => {
                 let form = document.getElementById('select-trip-form');
-                form.action = "{{ url_for('select_trip', id_viaje=0) }}".replace('0', id_viaje);
+                form.action = "/select_trip/" + id_viaje;
                 form.submit();
             }, 300);
         }

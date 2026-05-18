@@ -54,7 +54,13 @@ def get_viajes_usuario(id_usuario):
 
 @trip_bp.route('/<int:id_viaje>', methods=['GET'])
 def get_viaje(id_viaje):
-    v = obtener_viaje_por_id(id_viaje)
+    from sqlalchemy.orm import joinedload
+    from src.models.trip import Viaje
+    from src.models.itinerary import Itinerario
+    
+    # Cargar viaje con sus itinerarios y actividades de manera optimizada
+    v = Viaje.query.options(joinedload(Viaje.itinerarios).joinedload(Itinerario.actividades)).filter_by(id_viaje=id_viaje).first()
+    
     if not v:
         return jsonify({"error": "Viaje no encontrado"}), 404
 
@@ -65,7 +71,26 @@ def get_viaje(id_viaje):
         "fecha_inicio": v.fecha_inicio.isoformat(),
         "fecha_fin": v.fecha_fin.isoformat(),
         "tipo_viaje": v.tipo_viaje,
-        "costo_total_estimado": v.costo_total_estimado
+        "costo_total_estimado": v.costo_total_estimado,
+        "imagen": v.imagen,
+        "itinerarios": [
+            {
+                "id_itinerario": iti.id_itinerario,
+                "dia": iti.dia,
+                "resumen": iti.resumen,
+                "actividades": [
+                    {
+                        "id_actividad": act.id_actividad,
+                        "nombre": act.nombre,
+                        "descripcion": act.descripcion,
+                        "precio_estimado": act.precio_estimado,
+                        "categoria": act.categoria,
+                        "horario_sugerido": act.horario_sugerido,
+                        "ubicacion": act.ubicacion
+                    } for act in iti.actividades
+                ]
+            } for iti in v.itinerarios
+        ]
     }), 200
 
 

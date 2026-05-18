@@ -73,7 +73,7 @@
         <!-- Trip Card -->
         <div class="col-12 col-md-6 col-lg-4 trip-item {{ viaje.filter_class }}">
             <div class="trip-card d-block position-relative {% if viaje.is_past %}past-trip{% endif %}">
-                <a href="{{ url_for('itinerary') }}" class="text-decoration-none">
+                <a href="/itinerary/{{ viaje.id_viaje }}" class="text-decoration-none">
                     <div class="trip-card-bg" style="background-image: url('{{ viaje.imagen or 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' }}');"></div>
                     <div class="trip-card-overlay">
                         {% if viaje.status_label == 'current trip' %}

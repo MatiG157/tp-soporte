@@ -34,10 +34,10 @@
         <div class="d-flex justify-content-between align-items-start mb-4">
             <div>
                 <div class="d-flex align-items-center gap-2 mb-2">
-                    <span class="badge bg-light text-secondary rounded p-1 px-2 border fw-semibold">JAPAN</span>
-                    <span class="text-secondary fw-bold fs-6">&bull; Oct 12 - Oct 19</span>
+                    <span class="badge bg-light text-secondary rounded p-1 px-2 border fw-semibold text-uppercase">{{ viaje.destino }}</span>
+                    <span class="text-secondary fw-bold fs-6">&bull; {{ viaje.fecha_inicio_fmt }} - {{ viaje.fecha_fin_fmt }}</span>
                 </div>
-                <h1 class="display-4 fw-bold mb-0">Autumn in Kyoto</h1>
+                <h1 class="display-4 fw-bold mb-0">{{ viaje.tipo_viaje }} Trip to {{ viaje.destino }}</h1>
             </div>
             <div class="d-flex gap-2">
                 <button class="btn btn-outline-secondary rounded-circle icon-btn shadow-sm"><i class="fa-solid fa-share-nodes"></i></button>
@@ -54,9 +54,9 @@
                         <span class="text-secondary fw-bold fs-7 widget-title" data-i18n="iti_budget"><span data-i18n="iti_budget">TOTAL BUDGET</span></span>
                         <i class="fa-solid fa-wallet text-brand"></i>
                     </div>
-                    <div class="fs-2 fw-bold mb-3">$2,450 <span class="fs-6 fw-normal text-secondary">/ $3,000</span></div>
+                    <div class="fs-2 fw-bold mb-3">${{ viaje.costo_total_estimado }} <span class="fs-6 fw-normal text-secondary">/ (${{ viaje.costo_total_estimado }})</span></div>
                     <div class="progress" style="height: 8px; border-radius: 4px; background-color: #e2e8f0;">
-                        <div class="progress-bar bg-brand" role="progressbar" style="width: 81%;" aria-valuenow="81" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar bg-brand" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>
             </div>
@@ -68,7 +68,7 @@
                         <span class="text-secondary fw-bold fs-7 widget-title" data-i18n="iti_countdown"><span data-i18n="iti_countdown">COUNTDOWN</span></span>
                         <i class="fa-regular fa-calendar text-brand"></i>
                     </div>
-                    <div class="fs-2 fw-bold mb-3">14 <span class="fs-6 fw-normal text-secondary" data-i18n="iti_days"><span data-i18n="iti_days">Days Left</span></span></div>
+                    <div class="fs-2 fw-bold mb-3">- <span class="fs-6 fw-normal text-secondary" data-i18n="iti_days"><span data-i18n="iti_days">Days Left</span></span></div>
                     <div class="d-flex align-items-center text-secondary fs-7">
                         <i class="fa-solid fa-circle-check text-brand me-2"></i> <span data-i18n="iti_booked">Flights & Hotels booked</span>
                     </div>
@@ -82,7 +82,7 @@
                         <span class="text-secondary fw-bold fs-7 widget-title" data-i18n="iti_weather"><span data-i18n="iti_weather">WEATHER AVG</span></span>
                         <i class="fa-regular fa-sun text-brand"></i>
                     </div>
-                    <div class="fs-2 fw-bold mb-3">68°F <span class="fs-6 fw-normal text-secondary">/ 20°C</span></div>
+                    <div class="fs-2 fw-bold mb-3">22°C <span class="fs-6 fw-normal text-secondary">/ 71°F</span></div>
                     <div class="text-secondary fs-7">
                         <span data-i18n="iti_jackets">Perfect for light jackets</span>
                     </div>
@@ -91,11 +91,12 @@
         </div>
 
         <!-- Days Tabs -->
-        <div class="d-flex gap-2 mb-4">
-            <button class="btn btn-brand rounded-pill px-4 fw-bold shadow-sm border-0 text-white">Day 1 &bull; Oct 12</button>
-            <button class="btn btn-outline-secondary bg-light text-secondary rounded-pill px-4 fw-bold border-1">Day 2 &bull; Oct 13</button>
-            <button class="btn btn-outline-secondary bg-light text-secondary rounded-pill px-4 fw-bold border-1">Day 3 &bull; Oct 14</button>
-            <button class="btn btn-outline-secondary bg-light text-secondary rounded-pill px-4 fw-bold border-1">Day 4 &bull; Oct 15</button>
+        <div class="d-flex gap-2 mb-4 overflow-auto" id="daysTabsContainer">
+            {% for itin in viaje.itinerarios|sort(attribute='dia') %}
+            <button class="btn {% if loop.first %}btn-brand text-white shadow-sm border-0{% else %}btn-outline-secondary bg-light text-secondary border-1{% endif %} rounded-pill px-4 fw-bold day-tab-btn" data-day="{{ loop.index }}">
+                Day {{ itin.dia }} &bull; {{ itin.fecha_fmt }}
+            </button>
+            {% endfor %}
         </div>
 
         <!-- Main Layout (Timeline + Map) -->
@@ -104,60 +105,39 @@
             <div class="col-lg-8 position-relative">
                 <div class="timeline-line"></div>
                 
-                <!-- Timeline Item 1 -->
-                <div class="timeline-item mb-4">
-                    <div class="timeline-dot active-dot"></div>
-                    <div class="card timeline-card border rounded-4 shadow-sm">
-                        <div class="row g-0">
-                            <div class="col-md-4 p-3 pe-0">
-                                <div class="img-wrapper rounded-3 w-100 h-100" style="background-image: url('https://images.unsplash.com/photo-1493780474015-ba834fd0ce2f?q=80&w=400&auto=format&fit=crop'); background-size: cover; background-position: center; min-height: 140px;"></div>
-                            </div>
-                            <div class="col-md-8 p-3">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <div class="d-flex align-items-center text-brand fw-bold mb-1 fs-7">
-                                        <i class="fa-regular fa-clock me-2"></i> 09:00 AM - 12:30 PM
-                                    </div>
-                                    <span class="badge bg-light text-brand fs-6">$0</span>
+                {% for itin in viaje.itinerarios|sort(attribute='dia') %}
+                <div class="day-content" id="day-content-{{ loop.index }}" style="{% if not loop.first %}display: none;{% endif %}">
+                    {% for act in itin.actividades %}
+                    <!-- Timeline Item -->
+                    <div class="timeline-item mb-4">
+                        <div class="timeline-dot {% if loop.first %}active-dot{% endif %}"></div>
+                        <div class="card timeline-card border rounded-4 shadow-sm">
+                            <div class="row g-0">
+                                <div class="col-md-4 p-3 pe-0">
+                                    <div class="img-wrapper rounded-3 w-100 h-100" style="background-image: url('https://images.unsplash.com/photo-1493780474015-ba834fd0ce2f?q=80&w=400&auto=format&fit=crop'); background-size: cover; background-position: center; min-height: 140px;"></div>
                                 </div>
-                                <h4 class="fw-bold mb-2 text-dark">Fushimi Inari Taisha</h4>
-                                <p class="text-secondary fs-7 mb-3">
-                                    Hike through thousands of vermilion torii gates winding up Mount Inari. Start early to avoid the heaviest crowds and enjoy the peaceful atmosphere.
-                                </p>
-                                <div class="d-flex gap-2">
-                                    <span class="badge rounded p-1 px-2 fw-semibold tag-badge tag-sightseeing"><i class="fa-solid fa-camera me-1"></i> Sightseeing</span>
-                                    <span class="badge rounded p-1 px-2 fw-semibold tag-badge tag-activity"><i class="fa-solid fa-person-hiking me-1"></i> High Activity</span>
+                                <div class="col-md-8 p-3">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <div class="d-flex align-items-center text-{% if loop.first %}brand{% else %}secondary{% endif %} fw-bold mb-1 fs-7">
+                                            <i class="fa-regular fa-clock me-2"></i> {{ act.horario_sugerido }}
+                                        </div>
+                                        <span class="badge bg-light text-{% if loop.first %}brand{% else %}secondary{% endif %} fs-6">${{ act.precio_estimado }}</span>
+                                    </div>
+                                    <h4 class="fw-bold mb-2 text-dark">{{ act.nombre }}</h4>
+                                    <p class="text-secondary fs-7 mb-3">
+                                        {{ act.descripcion }}
+                                    </p>
+                                    <div class="d-flex gap-2">
+                                        <span class="badge rounded p-1 px-2 fw-semibold tag-badge tag-sightseeing"><i class="fa-solid fa-tag me-1"></i> {{ act.categoria }}</span>
+                                        <span class="badge rounded p-1 px-2 fw-semibold tag-badge tag-activity"><i class="fa-solid fa-map-pin me-1"></i> {{ act.ubicacion }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
-
-                <!-- Timeline Item 2 -->
-                <div class="timeline-item mb-4">
-                    <div class="timeline-dot"></div>
-                    <div class="card timeline-card border rounded-4 shadow-sm">
-                        <div class="row g-0">
-                            <div class="col-md-4 p-3 pe-0">
-                                <div class="img-wrapper rounded-3 w-100 h-100" style="background-image: url('https://images.unsplash.com/photo-1542051812871-7575008b82ff?q=80&w=400&auto=format&fit=crop'); background-size: cover; background-position: center; min-height: 140px;"></div>
-                            </div>
-                            <div class="col-md-8 p-3">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <div class="d-flex align-items-center text-secondary fw-bold mb-1 fs-7">
-                                        <i class="fa-regular fa-clock me-2"></i> 01:00 PM - 03:00 PM
-                                    </div>
-                                    <span class="badge bg-light text-secondary fs-6">~$25</span>
-                                </div>
-                                <h4 class="fw-bold mb-2 text-dark">Nishiki Market Lunch</h4>
-                                <p class="text-secondary fs-7 mb-3">
-                                    Known as 'Kyoto's Kitchen', this five-block long shopping street is packed with over a hundred shops and restaurants. Perfect spot for trying various local foods.
-                                </p>
-                                <div class="d-flex gap-2">
-                                    <span class="badge rounded p-1 px-2 fw-semibold tag-badge tag-food"><i class="fa-solid fa-utensils me-1"></i> Food</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
 
             <!-- Right Sidebar Section (Map & Logistics) -->
@@ -215,4 +195,31 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.day-tab-btn');
+    const contents = document.querySelectorAll('.day-content');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Remove active classes from all tabs
+            tabs.forEach(t => {
+                t.classList.remove('btn-brand', 'text-white', 'shadow-sm', 'border-0');
+                t.classList.add('btn-outline-secondary', 'bg-light', 'text-secondary', 'border-1');
+            });
+            // Add active class to clicked tab
+            this.classList.remove('btn-outline-secondary', 'bg-light', 'text-secondary', 'border-1');
+            this.classList.add('btn-brand', 'text-white', 'shadow-sm', 'border-0');
+
+            // Hide all content
+            contents.forEach(c => c.style.display = 'none');
+            // Show corresponding content
+            const dayId = this.getAttribute('data-day');
+            document.getElementById('day-content-' + dayId).style.display = 'block';
+        });
+    });
+});
+</script>
+
 {% endblock %}

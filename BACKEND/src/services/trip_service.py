@@ -3,6 +3,8 @@ from datetime import datetime, timedelta
 from src.models.init import db
 from src.models.trip import Viaje
 from src.models.user import Usuario
+from src.models.itinerary import Itinerario
+from src.models.activity import Actividad
 from src.validators.trip_validator import viaje_schema
 
 
@@ -67,8 +69,10 @@ def eliminar_viaje(id_viaje):
 
 
 def guardar_viajes_generados(id_usuario, opciones_generadas):
-    # Borrar drafts previos del usuario para no ensuciar la DB y limpiar antiguos (por ejemplo >24h o todos los drafts anteriores)
-    Viaje.query.filter_by(id_usuario=id_usuario, estado="draft").delete()
+    # Borrar drafts previos del usuario obteniéndolos para que ORM aplique cascade
+    drafts_previos = Viaje.query.filter_by(id_usuario=id_usuario, estado="draft").all()
+    for draft in drafts_previos:
+        db.session.delete(draft)
 
     group_id = str(uuid.uuid4())
     viajes_creados = []
@@ -85,6 +89,30 @@ def guardar_viajes_generados(id_usuario, opciones_generadas):
             estado="draft"
         )
         db.session.add(viaje)
+        
+        # Guardar itinerario
+        itinerario_data = opcion.get("itinerario", [])
+        for dia_data in itinerario_data:
+            nuevo_itinerario = Itinerario(
+                dia=dia_data["dia"],
+                resumen=dia_data["resumen"]
+            )
+            nuevo_itinerario.viaje = viaje
+            db.session.add(nuevo_itinerario)
+            
+            # Guardar actividades
+            for act_data in dia_data.get("actividades", []):
+                nueva_actividad = Actividad(
+                    nombre=act_data["nombre"],
+                    descripcion=act_data.get("descripcion", ""),
+                    precio_estimado=act_data.get("precio_estimado", 0.0),
+                    categoria=act_data.get("categoria", ""),
+                    horario_sugerido=act_data.get("horario_sugerido", ""),
+                    ubicacion=act_data.get("ubicacion", "")
+                )
+                nueva_actividad.itinerario = nuevo_itinerario
+                db.session.add(nueva_actividad)
+                
         viajes_creados.append(viaje)
 
     db.session.commit()
@@ -110,11 +138,14 @@ def confirmar_viaje(id_viaje):
     # Cambiar estado a guardado
     viaje_seleccionado.estado = "guardado"
 
-    # Borrar los otros drafts del mismo grupo
-    Viaje.query.filter(
+    # Borrar los otros drafts del mismo grupo obteniéndolos para que ORM aplique cascade
+    otros_drafts = Viaje.query.filter(
         Viaje.group_id == viaje_seleccionado.group_id,
         Viaje.id_viaje != id_viaje
-    ).delete()
+    ).all()
+    
+    for draft in otros_drafts:
+        db.session.delete(draft)
 
     db.session.commit()
     return viaje_seleccionado
