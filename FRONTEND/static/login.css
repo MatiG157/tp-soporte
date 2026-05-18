@@ -7,7 +7,8 @@ body, html {
 
 .split-screen {
     display: flex;
-    min-height: 100vh;
+    flex: 1;
+    min-height: 100%;
 }
 
 .left-pane {
@@ -38,13 +39,13 @@ body, html {
 .badge-custom {
     background: rgba(0, 200, 150, 0.2);
     color: #48ebd3;
-    padding: 5px 15px;
+    padding: 4px 12px;
     border-radius: 20px;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-weight: bold;
     display: inline-block;
     width: fit-content;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     border: 1px solid #48ebd3;
 }
 
@@ -92,6 +93,7 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 40px 0;
 }
 
 .right-content {

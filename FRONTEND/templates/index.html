@@ -6,8 +6,8 @@
 
     <!-- Header Text -->
     <div class="text-center text-white mb-5 mx-auto mt-5" style="max-width: 600px;">
-        <h1 class="display-3 fw-bold">Design Your Perfect Escape</h1>
-        <p class="lead">Plan, budget, and explore with guided discovery. Every detail of your journey, seamlessly
+        <h1 class="display-3 fw-bold" data-i18n="index_title">Design Your Perfect Escape</h1>
+        <p class="lead" data-i18n="index_subtitle">Plan, budget, and explore with guided discovery. Every detail of your journey, seamlessly
             organized in one place.</p>
     </div>
 
@@ -21,9 +21,9 @@
                     <i class="fa-solid fa-location-dot fs-5 text-center" style="width: 30px;"></i>
                     <div class="flex-grow-1 ms-2">
                         <label class="form-label-small mb-1 d-block text-uppercase fw-bold"
-                            style="font-size: 0.75rem;">Origin</label>
+                            style="font-size: 0.75rem;" data-i18n="index_origin">Origin</label>
                         <input type="text" class="form-control input-clean p-0 border-0 bg-transparent shadow-none"
-                            placeholder="From?">
+                            placeholder="From?" data-i18n-placeholder="index_ph_origin">
                     </div>
                 </div>
             </div>
@@ -33,9 +33,9 @@
                     <i class="fa-solid fa-location-dot fs-5 text-center" style="width: 30px;"></i>
                     <div class="flex-grow-1 ms-2">
                         <label class="form-label-small mb-1 d-block text-uppercase fw-bold"
-                            style="font-size: 0.75rem;">Destination</label>
+                            style="font-size: 0.75rem;" data-i18n="index_dest">Destination</label>
                         <input type="text" class="form-control input-clean p-0 border-0 bg-transparent shadow-none"
-                            placeholder="Where to?">
+                            placeholder="Where to?" data-i18n-placeholder="index_ph_dest">
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                     <i class="fa-solid fa-plane-departure fs-5 text-center" style="width: 30px;"></i>
                     <div class="flex-grow-1 ms-2">
                         <label class="form-label-small mb-1 d-block text-uppercase fw-bold"
-                            style="font-size: 0.75rem;">Departure</label>
+                            style="font-size: 0.75rem;" data-i18n="index_dep">Departure</label>
                         <input type="date" class="form-control input-clean p-0 border-0 bg-transparent shadow-none">
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                     <i class="fa-solid fa-plane-arrival fs-5 text-center" style="width: 30px;"></i>
                     <div class="flex-grow-1 ms-2">
                         <label class="form-label-small mb-1 d-block text-uppercase fw-bold"
-                            style="font-size: 0.75rem;">Arrival</label>
+                            style="font-size: 0.75rem;" data-i18n="index_arr">Arrival</label>
                         <input type="date" class="form-control input-clean p-0 border-0 bg-transparent shadow-none">
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                     <i class="fa-solid fa-money-bill-wave fs-5 text-center" style="width: 30px;"></i>
                     <div class="flex-grow-1 ms-2">
                         <label class="form-label-small mb-1 d-block text-uppercase fw-bold"
-                            style="font-size: 0.75rem;">Budget</label>
+                            style="font-size: 0.75rem;" data-i18n="index_budget">Budget</label>
 
                         <div class="d-flex align-items-center">
                             <!-- Grupo Min -->
@@ -80,7 +80,7 @@
                                 <span class="v-separator"></span>
                                 <input type="number" id="budgetMin"
                                     class="form-control input-clean p-0 border-0 bg-transparent shadow-none w-100"
-                                    placeholder="Min $" step="100">
+                                    placeholder="Min $" step="100" data-i18n-placeholder="index_ph_min">
                             </div>
 
                             <!-- Espaciador entre los dos campos (opcional) -->
@@ -91,7 +91,7 @@
                                 <span class="v-separator"></span>
                                 <input type="number" id="budgetMax"
                                     class="form-control input-clean p-0 border-0 bg-transparent shadow-none w-100"
-                                    placeholder="Max $">
+                                    placeholder="Max $" data-i18n-placeholder="index_ph_max">
                             </div>
                         </div>
                     </div>
@@ -102,9 +102,9 @@
                     <i class="fa-solid fa-user-group fs-5 text-center" style="width: 30px;"></i>
                     <div class="flex-grow-1 ms-2">
                         <label class="form-label-small mb-1 d-block text-uppercase fw-bold"
-                            style="font-size: 0.75rem;">Travelers</label>
+                            style="font-size: 0.75rem;" data-i18n="index_travelers">Travelers</label>
                         <input type="number" class="form-control input-clean p-0 border-0 bg-transparent shadow-none"
-                            placeholder="Count">
+                            placeholder="Count" data-i18n-placeholder="index_ph_count">
                     </div>
                 </div>
             </div>
@@ -116,7 +116,7 @@
             <!-- Botón que activa el collapse -->
             <h6 class="text-uppercase fw-bold mb-3 d-inline-flex align-items-center user-select-none"
                 style="color: var(--brand-color, #006d5b); cursor: pointer;" data-bs-toggle="collapse"
-                data-bs-target="#moreDetailsCollapse" aria-expanded="false" aria-controls="moreDetailsCollapse">
+                data-bs-target="#moreDetailsCollapse" aria-expanded="false" aria-controls="moreDetailsCollapse" data-i18n="index_more">
                 <i class="fa-solid fa-chevron-down me-2 transition-transform"></i> More Details
             </h6>
 
@@ -124,40 +124,40 @@
             <div class="collapse" id="moreDetailsCollapse">
 
                 <div class="bg-light rounded p-3 mb-3">
-                    <label class="form-label-small mb-1 d-block text-uppercase fw-bold" style="font-size: 0.75rem;">Ages
-                        of Travelers</label>
+                    <label class="form-label-small mb-1 d-block text-uppercase fw-bold" style="font-size: 0.75rem;"><span data-i18n="index_ages">Ages
+                        of Travelers</span></label>
                     <input type="text" class="form-control input-clean p-0 border-0 bg-transparent shadow-none"
                         placeholder="e.g. 25, 28, 5">
                 </div>
 
-                <!-- Fila invertida: Accommodation a la izquierda, Trip Type a la derecha -->
+                <!-- Fila invertida: <span data-i18n="index_acc_title">Accommodation</span> a la izquierda, Trip Type a la derecha -->
                 <div class="row g-3 mb-3">
-                    <!-- Accommodation Checkboxes -->
+                    <!-- <span data-i18n="index_acc_title">Accommodation</span> Checkboxes -->
                     <div class="col-sm-6">
                         <div class="bg-light rounded p-3 h-100">
                             <label class="text-uppercase fw-bold d-block mb-2" style="font-size: 0.8rem;">
-                                Accommodation
+                                <span data-i18n="index_acc_title">Accommodation</span>
                             </label>
                             <div class="d-flex flex-column gap-2">
                                 <div class="form-check">
                                     <input class="form-check-input custom-checkbox" type="checkbox" value="hotel"
                                         id="acc_hotel">
-                                    <label class="form-check-label" for="acc_hotel">Hotel</label>
+                                    <label class="form-check-label" for="acc_hotel" data-i18n="index_hotel">Hotel</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input custom-checkbox" type="checkbox" value="hostel"
                                         id="acc_hostel">
-                                    <label class="form-check-label" for="acc_hostel">Hostel</label>
+                                    <label class="form-check-label" for="acc_hostel" data-i18n="index_hostel">Hostel</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input custom-checkbox" type="checkbox" value="airbnb"
                                         id="acc_airbnb">
-                                    <label class="form-check-label" for="acc_airbnb">Airbnb</label>
+                                    <label class="form-check-label" for="acc_airbnb" data-i18n="index_airbnb">Airbnb</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input custom-checkbox" type="checkbox" value="resort"
                                         id="acc_resort">
-                                    <label class="form-check-label" for="acc_resort">Resort</label>
+                                    <label class="form-check-label" for="acc_resort" data-i18n="index_resort">Resort</label>
                                 </div>
                             </div>
                         </div>
@@ -173,22 +173,22 @@
                                 <div class="form-check">
                                     <input class="form-check-input custom-checkbox" type="radio" name="tripType" value="educational"
                                         id="trip_educational">
-                                    <label class="form-check-label" for="trip_educational">Educational</label>
+                                    <label class="form-check-label" for="trip_educational" data-i18n="index_edu">Educational</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input custom-checkbox" type="radio" name="tripType" value="family"
                                         id="trip_family">
-                                    <label class="form-check-label" for="trip_family">Family</label>
+                                    <label class="form-check-label" for="trip_family" data-i18n="index_family">Family</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input custom-checkbox" type="radio" name="tripType" value="friends"
                                         id="trip_friends">
-                                    <label class="form-check-label" for="trip_friends">Friends</label>
+                                    <label class="form-check-label" for="trip_friends" data-i18n="index_friends">Friends</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input custom-checkbox" type="radio" name="tripType" value="solo"
                                         id="trip_solo">
-                                    <label class="form-check-label" for="trip_solo">Solo</label>
+                                    <label class="form-check-label" for="trip_solo" data-i18n="index_solo">Solo</label>
                                 </div>
                             </div>
                         </div>
@@ -207,19 +207,19 @@
                             <div class="d-flex flex-column gap-2">
                                 <div class="form-check">
                                     <input class="form-check-input custom-checkbox" type="checkbox" value="plane" id="trans_plane">
-                                    <label class="form-check-label" for="trans_plane">Plane</label>
+                                    <label class="form-check-label" for="trans_plane" data-i18n="index_plane">Plane</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input custom-checkbox" type="checkbox" value="train" id="trans_train">
-                                    <label class="form-check-label" for="trans_train">Train</label>
+                                    <label class="form-check-label" for="trans_train" data-i18n="index_train">Train</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input custom-checkbox" type="checkbox" value="car" id="trans_car">
-                                    <label class="form-check-label" for="trans_car">Car</label>
+                                    <label class="form-check-label" for="trans_car" data-i18n="index_car">Car</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input custom-checkbox" type="checkbox" value="bus" id="trans_bus">
-                                    <label class="form-check-label" for="trans_bus">Bus</label>
+                                    <label class="form-check-label" for="trans_bus" data-i18n="index_bus">Bus</label>
                                 </div>
                             </div>
                         </div>
@@ -257,7 +257,7 @@
                 <!-- Extras (Texto Libre) -->
                 <div class="bg-light rounded p-3 mb-3">
                     <label for="extras" class="text-uppercase fw-bold d-block mb-2"
-                        style="font-size: 0.8rem;">Extras / Special Requests</label>
+                        style="font-size: 0.8rem;" data-i18n="index_extras">Extras / Special Requests</label>
                     <textarea id="extras" class="form-control input-clean p-0 border-0 bg-transparent shadow-none"
                         rows="2" placeholder="Any extra destination or requirement? (e.g. Needs Vegan Food)"></textarea>
                 </div>
@@ -269,13 +269,13 @@
         {% if user_id %}
         <button type="submit" class="btn btn-brand w-100 py-3 fw-bold rounded-3 mt-2 fs-5 text-white"
             style="background-color: var(--brand-color, #006d5b);">
-            <i class="fa-regular fa-compass me-2"></i> Create Trip
+            <i class="fa-regular fa-compass me-2"></i> <span data-i18n="index_create">Create Trip</span>
         </button>
         {% else %}
         <button type="button" class="btn btn-brand w-100 py-3 fw-bold rounded-3 mt-2 fs-5 text-white"
             style="background-color: var(--brand-color, #006d5b);"
             data-bs-toggle="modal" data-bs-target="#loginRequiredModal">
-            <i class="fa-regular fa-compass me-2"></i> Create Trip
+            <i class="fa-regular fa-compass me-2"></i> <span data-i18n="index_create">Create Trip</span>
         </button>
         {% endif %}
     </form>

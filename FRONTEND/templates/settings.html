@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block body %}
+<link rel="stylesheet" href="{{ url_for('static', filename='settings.css') }}">
+
+<style>
+    .list-group-item:hover:not(.active) {
+        background-color: #e6f2f0 !important;
+        color: #006d5b !important;
+    }
+</style>
+
+<div class="container py-5 max-w-lg mx-auto" style="max-width: 800px;">
+    <h2 class="mb-4 fw-bold" data-i18n="settings_title">Settings</h2>
+    
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="list-group rounded-3 shadow-sm border-0">
+                <button type="button" class="list-group-item list-group-item-action active border-0 d-flex align-items-center gap-2 py-3" aria-current="true" data-i18n="settings_language">
+                    <i class="fa-solid fa-globe text-center" style="width: 20px;"></i> Language
+                </button>
+                <button type="button" class="list-group-item list-group-item-action border-0 d-flex align-items-center gap-2 py-3" data-i18n="settings_profile">
+                    <i class="fa-regular fa-user text-center" style="width: 20px;"></i> Profile
+                </button>
+                <button type="button" class="list-group-item list-group-item-action border-0 d-flex align-items-center gap-2 py-3" data-i18n="settings_notifications">
+                    <i class="fa-regular fa-bell text-center" style="width: 20px;"></i> Notifications
+                </button>
+                <button type="button" class="list-group-item list-group-item-action border-0 d-flex align-items-center gap-2 py-3" data-i18n="settings_security">
+                    <i class="fa-solid fa-shield-halved text-center" style="width: 20px;"></i> Security
+                </button>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body p-4">
+                    <h4 class="card-title fw-bold mb-3" data-i18n="settings_language">Language</h4>
+                    <p class="text-secondary mb-4" data-i18n="settings_language_desc">Select your preferred language</p>
+                    
+                    <div class="mb-4">
+                        <select id="language-select" class="form-select form-select-lg w-50" onchange="window.setLanguage(this.value)">
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                            <option value="fr">Français</option>
+                            <option value="it">Italiano</option>
+                            <option value="de">Deutsch</option>
+                            <option value="ru">Русский</option>
+                            <option value="zh">中文</option>
+                            <option value="ja">日本語</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

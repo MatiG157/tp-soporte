@@ -1,0 +1,13 @@
+.list-group-item.active {
+    background-color: var(--brand-color, #006d5b);
+    color: white;
+}
+
+.list-group-item:hover:not(.active) {
+    background-color: #e6f2f0 !important;
+    color: var(--brand-color, #006d5b);
+}
+
+.card {
+    background-color: #fff;
+}

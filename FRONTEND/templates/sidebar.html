@@ -1,22 +1,22 @@
 <div class="sidebar">
  
     <div class="nav flex-column mb-auto mt-4">
-        <a href="/compare" class="sidebar-link {% if active_page == 'compare' %}active-link{% endif %}">
+        <a href="/compare" class="sidebar-link {% if active_page == 'compare' %}active-link{% endif %}" data-i18n="sidebar_compare">
             <i class="fa-solid fa-arrow-right-arrow-left"></i> Compare
         </a>
-        <a href="/itinerary" class="sidebar-link {% if active_page == 'itinerary' %}active-link{% endif %}">
-            <i class="fa-solid fa-map"></i> Itinerario
+        <a href="/itinerary" class="sidebar-link {% if active_page == 'itinerary' %}active-link{% endif %}" data-i18n="sidebar_itinerary">
+            <i class="fa-solid fa-map"></i> Itinerary
         </a>
-        <a href="/budget" class="sidebar-link {% if active_page == 'budget' %}active-link{% endif %}">
+        <a href="/budget" class="sidebar-link {% if active_page == 'budget' %}active-link{% endif %}" data-i18n="sidebar_budget">
             <i class="fa-solid fa-piggy-bank"></i> Budget
         </a>
-        <a href="/settings" class="sidebar-link {% if active_page == 'settings' %}active-link{% endif %}">
+        <a href="/settings" class="sidebar-link {% if active_page == 'settings' %}active-link{% endif %}" data-i18n="sidebar_settings">
             <i class="fa-solid fa-gear"></i> Settings
         </a>
     </div>
 
     <div class="mt-auto pt-4">
-        <button class="btn w-100 fw-bold rounded-3 py-2 text-white" style="background-color: var(--brand-color, #006d5b);">
+        <button onclick="window.location.href='{{ url_for('logout') }}'" class="btn w-100 fw-bold rounded-3 py-2 text-white" style="background-color: var(--brand-color, #006d5b);" data-i18n="sidebar_logout">
             <i class="fa-solid fa-sign-out-alt me-2" style="color: white;"></i> Log Out
         </button>
     </div>
