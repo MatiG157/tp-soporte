@@ -37,7 +37,7 @@
                     <span class="badge bg-light text-secondary rounded p-1 px-2 border fw-semibold text-uppercase">{{ viaje.destino }}</span>
                     <span class="text-secondary fw-bold fs-6">&bull; {{ viaje.fecha_inicio_fmt }} - {{ viaje.fecha_fin_fmt }}</span>
                 </div>
-                <h1 class="display-4 fw-bold mb-0">{{ viaje.tipo_viaje }} Trip to {{ viaje.destino }}</h1>
+                <h1 class="display-4 fw-bold mb-0">{{ viaje.tipo_viaje }} <span data-i18n="iti_trip_to">Trip to</span> {{ viaje.destino }}</h1>
             </div>
             <div class="d-flex gap-2">
                 <button class="btn btn-outline-secondary rounded-circle icon-btn shadow-sm"><i class="fa-solid fa-share-nodes"></i></button>
@@ -151,7 +151,7 @@
                     <div class="p-4 position-relative z-1">
                         <div class="bg-white text-dark rounded-3 px-3 py-2 d-inline-block shadow">
                             <h6 class="fw-bold mb-0 text-brand">Kyoto City</h6>
-                            <small class="text-secondary">3 Activities Today</small>
+                            <small class="text-secondary">3 <span data-i18n="iti_activities_today">Activities Today</span></small>
                         </div>
                     </div>
                     
@@ -176,7 +176,7 @@
                             <i class="fa-solid fa-train-subway text-secondary"></i>
                         </div>
                         <div>
-                            <h6 class="fw-bold mb-1 fs-7">Transport Pass Active</h6>
+                            <h6 class="fw-bold mb-1 fs-7" data-i18n="iti_transport_pass">Transport Pass Active</h6>
                             <p class="text-secondary fs-7 mb-0">JR Pass covers lines to Inari.</p>
                         </div>
                     </div>
@@ -186,7 +186,7 @@
                             <i class="fa-regular fa-lightbulb text-secondary"></i>
                         </div>
                         <div>
-                            <h6 class="fw-bold mb-1 fs-7">Pro Tip</h6>
+                            <h6 class="fw-bold mb-1 fs-7" data-i18n="iti_pro_tip">Pro Tip</h6>
                             <p class="text-secondary fs-7 mb-0">Bring extra yen cash; many stalls at Nishiki Market do not accept credit cards.</p>
                         </div>
                     </div>

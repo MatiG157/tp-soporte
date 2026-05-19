@@ -51,10 +51,10 @@
                 <i class="fa-solid fa-filter"></i> Filter
             </button>
             <ul class="dropdown-menu border-0 shadow-sm" aria-labelledby="filterDropdown">
-                <li><a class="dropdown-item filter-opt" href="#" data-filter="all" data-label="All trips">All trips</a></li>
-                <li><a class="dropdown-item filter-opt" href="#" data-filter="current-trip" data-label="Current trips">Current trips</a></li>
-                <li><a class="dropdown-item filter-opt" href="#" data-filter="past-trip" data-label="Past trips">Past trips</a></li>
-                <li><a class="dropdown-item filter-opt" href="#" data-filter="next-trip" data-label="Next trips">Next trips</a></li>
+                <li><a class="dropdown-item filter-opt" href="#" data-filter="all" data-label="All trips" data-i18n="mytrips_all">All trips</a></li>
+                <li><a class="dropdown-item filter-opt" href="#" data-filter="current-trip" data-label="Current trips" data-i18n="mytrips_current">Current trips</a></li>
+                <li><a class="dropdown-item filter-opt" href="#" data-filter="past-trip" data-label="Past trips" data-i18n="mytrips_past_f">Past trips</a></li>
+                <li><a class="dropdown-item filter-opt" href="#" data-filter="next-trip" data-label="Next trips" data-i18n="mytrips_upcoming">Next trips</a></li>
             </ul>
         </div>
     </div>
@@ -64,7 +64,7 @@
     <div class="mb-4" id="filter-chip-container" style="min-height: 32px;">
         <span class="badge rounded-pill align-items-center px-3 py-2 text-white" id="active-chip" style="background-color: rgba(0, 109, 91, 0.7); backdrop-filter: blur(6px); font-weight: 500; font-size: 0.9rem;">
             <i class="fa-solid fa-xmark me-2 text-white" style="cursor:pointer; display:none;" id="clear-filter-btn"></i>
-            <span id="chip-text">All trips</span>
+            <span id="chip-text" data-i18n="mytrips_all">All trips</span>
         </span>
     </div>
 
@@ -77,11 +77,11 @@
                     <div class="trip-card-bg" style="background-image: url('{{ viaje.imagen or 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' }}');"></div>
                     <div class="trip-card-overlay">
                         {% if viaje.status_label == 'current trip' %}
-                            <span class="badge-custom mb-2 d-inline-block text-white fw-bold" style="background-color: rgba(13, 202, 240, 0.7); backdrop-filter: blur(6px); padding: 2px 10px; border-radius: 20px; font-size: 0.65rem; text-transform: uppercase;"><i class="fa-solid fa-plane me-1"></i>Current Trip</span>
+                            <span class="badge-custom mb-2 d-inline-block text-white fw-bold" style="background-color: rgba(13, 202, 240, 0.7); backdrop-filter: blur(6px); padding: 2px 10px; border-radius: 20px; font-size: 0.65rem; text-transform: uppercase;"><i class="fa-solid fa-plane me-1"></i><span data-i18n="mytrips_current">Current Trip</span></span>
                         {% elif viaje.status_label == 'upcoming trip' %}
-                            <span class="badge-custom mb-2 d-inline-block text-white" style="background-color: rgba(25, 135, 84, 0.7); backdrop-filter: blur(6px); padding: 2px 10px; border-radius: 20px; font-size: 0.65rem; text-transform: uppercase;"><i class="fa-solid fa-plane-departure me-1"></i>Upcoming Trip</span>
+                            <span class="badge-custom mb-2 d-inline-block text-white" style="background-color: rgba(25, 135, 84, 0.7); backdrop-filter: blur(6px); padding: 2px 10px; border-radius: 20px; font-size: 0.65rem; text-transform: uppercase;"><i class="fa-solid fa-plane-departure me-1"></i><span data-i18n="mytrips_upcoming">Upcoming Trip</span></span>
                         {% elif viaje.status_label == 'last trip' %}
-                            <span class="badge-custom mb-2 d-inline-block text-white" style="background-color: rgba(108, 117, 125, 0.7); backdrop-filter: blur(6px); padding: 2px 10px; border-radius: 20px; font-size: 0.65rem; text-transform: uppercase;"><i class="fa-solid fa-plane-arrival me-1"></i>Last Trip</span>
+                            <span class="badge-custom mb-2 d-inline-block text-white" style="background-color: rgba(108, 117, 125, 0.7); backdrop-filter: blur(6px); padding: 2px 10px; border-radius: 20px; font-size: 0.65rem; text-transform: uppercase;"><i class="fa-solid fa-plane-arrival me-1"></i><span data-i18n="mytrips_past_f">Last Trip</span></span>
                         {% endif %}
                         <div>
                             <span class="trip-date"><i class="fa-regular fa-calendar me-1"></i> {{ viaje.fecha_inicio }} - {{ viaje.fecha_fin }}</span>
@@ -94,10 +94,10 @@
                         <i class="fa-solid fa-ellipsis-vertical text-white"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-                        <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-eye me-2" style="color: var(--brand-color, #006d5b);"></i data-i18n="mytrips_view"> Ver viaje</a></li>
-                        <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-pen me-2" style="color: var(--brand-color, #006d5b);"></i data-i18n="mytrips_edit"> Editar viaje</a></li>
+                        <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-eye me-2" style="color: var(--brand-color, #006d5b);"></i> <span data-i18n="mytrips_view">Ver viaje</span></a></li>
+                        <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-pen me-2" style="color: var(--brand-color, #006d5b);"></i> <span data-i18n="mytrips_edit">Editar viaje</span></a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item py-2 text-danger" href="#"><i class="fa-solid fa-trash me-2 text-danger"></i data-i18n="mytrips_delete"> Eliminar viaje</a></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="#"><i class="fa-solid fa-trash me-2 text-danger"></i> <span data-i18n="mytrips_delete">Eliminar viaje</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -125,9 +125,25 @@
         const chipText = document.getElementById('chip-text');
         const clearFilterBtn = document.getElementById('clear-filter-btn');
 
-        function applyFilter(filter, label) {
+        function applyFilter(filter, label, el=null) {
+            const lang = localStorage.getItem('app_lang') || 'en';
             // Update Chip UI
-            chipText.textContent = label;
+            if (el) {
+                const dictKey = el.getAttribute('data-i18n');
+                if(dictKey) chipText.setAttribute('data-i18n', dictKey);
+                chipText.textContent = el.textContent.trim();
+            } else {
+                if(filter === 'all') {
+                    chipText.setAttribute('data-i18n', 'mytrips_all');
+                    if(window.translations && window.translations[lang] && window.translations[lang]['mytrips_all']) {
+                        chipText.textContent = window.translations[lang]['mytrips_all'];
+                    } else {
+                        chipText.textContent = label;
+                    }
+                } else {
+                    chipText.textContent = label;
+                }
+            }
             if (filter === 'all') {
                 clearFilterBtn.style.display = 'none';
             } else {
@@ -149,7 +165,7 @@
                 e.preventDefault();
                 const filter = btn.getAttribute('data-filter');
                 const label = btn.getAttribute('data-label');
-                applyFilter(filter, label);
+                applyFilter(filter, label, btn);
             });
         });
 
