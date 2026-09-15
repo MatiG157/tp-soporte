@@ -919,3 +919,42 @@
   background-color: rgba(0, 109, 91, 0.05);
   transform: translateY(-1px);
 }
+
+/* ─── Actividad en curso (en transcurso según horario actual) ─────────────── */
+.activity-en-curso .timeline-card {
+  border: 2px solid var(--brand-color, #006d5b) !important;
+  box-shadow: 0 0 0 4px rgba(0, 109, 91, 0.2), 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+  transform: translateY(-2px);
+  position: relative;
+}
+
+.activity-en-curso .timeline-dot {
+  border-color: var(--brand-color, #006d5b) !important;
+  background-color: var(--brand-color, #006d5b) !important;
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 109, 91, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(0, 109, 91, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 109, 91, 0);
+  }
+}
+
+.timeline-block.timeline-block-en-curso {
+  outline: 2px solid #ffffff;
+  box-shadow: 0 0 0 3px var(--brand-color, #006d5b);
+  font-weight: 700;
+  z-index: 5;
+  filter: brightness(1.1);
+}
+
+.badge-en-curso {
+  animation: fadeIn 0.3s ease;
+}
+

@@ -50,6 +50,7 @@
   "act_delete_note": "El presupuesto del viaje baja lo que costaba.",
   "act_description": "Descripción",
   "act_edit": "Editar actividad",
+  "act_in_progress": "En curso",
   "act_location": "Ubicación",
   "act_no_time": "Sin horario",
   "act_price": "Precio",

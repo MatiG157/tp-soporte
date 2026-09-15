@@ -884,3 +884,56 @@ def test_el_mapa_dibuja_el_recorrido_del_dia():
     assert "function dibujarRecorridoDelDia" in cuerpo
     assert "dibujarRecorridoDelDia();" in cuerpo      # y está llamada
     assert "L.polyline(puntosDelDiaActual" in cuerpo
+
+
+def test_los_tramos_del_camino_tienen_el_color_del_logo_destino():
+    """Las líneas de los caminos adoptan el color del logo al que van."""
+    from pathlib import Path
+
+    plantilla = Path(__file__).resolve().parent.parent / "templates" / "itinerary.html"
+    cuerpo = plantilla.read_text(encoding="utf-8")
+
+    assert "function renderizarTramosRecorrido" in cuerpo
+    assert "color: tramo.color" in cuerpo
+    assert "destinoActId" in cuerpo
+    assert "obtenerRutaPorCallesSegmentos" in cuerpo
+
+
+def test_superposicion_de_camino_en_hover_o_click():
+    """Al pasar el cursor o hacer clic en un logo, se superpone el camino que conduce a él."""
+    from pathlib import Path
+
+    plantilla = Path(__file__).resolve().parent.parent / "templates" / "itinerary.html"
+    cuerpo = plantilla.read_text(encoding="utf-8")
+
+    assert "function resaltarTramoHacia" in cuerpo
+    assert "function restaurarTramos" in cuerpo
+    assert "bringToFront" in cuerpo
+    assert "resaltarTramoHacia(actId)" in cuerpo
+
+
+def test_viaje_en_transcurso_abre_dia_actual_y_destino():
+    """Cuando el viaje está en curso, se abre en el día actual y su destino."""
+    from pathlib import Path
+
+    plantilla = Path(__file__).resolve().parent.parent / "templates" / "itinerary.html"
+    cuerpo = plantilla.read_text(encoding="utf-8")
+
+    assert "function obtenerDiaActualEnTranscurso" in cuerpo
+    assert "countdown_estado" in cuerpo
+    assert "dias_info" in cuerpo
+    assert "data-dest=" in cuerpo
+
+
+def test_actividad_en_curso_se_resalta_segun_horario():
+    """La actividad que transcurre en el momento actual se resalta según el horario."""
+    from pathlib import Path
+
+    plantilla = Path(__file__).resolve().parent.parent / "templates" / "itinerary.html"
+    cuerpo = plantilla.read_text(encoding="utf-8")
+
+    assert "function resaltarActividadEnCurso" in cuerpo
+    assert "activity-en-curso" in cuerpo
+    assert "badge-en-curso" in cuerpo
+    assert "parsearHorario" in cuerpo
+

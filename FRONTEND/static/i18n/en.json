@@ -50,6 +50,7 @@
   "act_delete_note": "The trip budget goes down by its price.",
   "act_description": "Description",
   "act_edit": "Edit activity",
+  "act_in_progress": "In progress",
   "act_location": "Location",
   "act_no_time": "Without a set time",
   "act_price": "Price",

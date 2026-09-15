@@ -379,5 +379,6 @@
   "iti_map_layer_osm": "Padrão (OSM)",
   "iti_next_none": "Nada agendado",
   "iti_next_done": "Viagem concluída ou sem datas",
-  "index_ph_ages": "ex. 25, 28, 5"
+  "index_ph_ages": "ex. 25, 28, 5",
+  "act_in_progress": "Em andamento"
 }

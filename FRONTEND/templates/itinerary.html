@@ -130,6 +130,9 @@
 
         {% for itin in viaje.itinerarios %}
         <div class="day-content" id="day-content-{{ loop.index }}"
+             data-dia="{{ itin.dia or loop.index }}"
+             data-fecha="{{ itin.fecha_iso or '' }}"
+             data-destino="{{ itin.destino_del_dia or '' }}"
              data-actividades="{{ itin.actividades | tojson }}"
              data-itinerario="{{ itin.id_itinerario }}"
              data-total-dia="{{ itin.total_dia or 0 }}"
@@ -526,7 +529,17 @@
       fecha_inicio: {{ viaje.fecha_inicio | tojson }},
       fecha_fin: {{ viaje.fecha_fin | tojson }},
       fecha_inicio_fmt: "{{ viaje.fecha_inicio_fmt }}",
-      fecha_fin_fmt: "{{ viaje.fecha_fin_fmt }}"
+      fecha_fin_fmt: "{{ viaje.fecha_fin_fmt }}",
+      countdown_estado: {{ viaje.countdown_estado | tojson }},
+      dias_info: [
+          {% for itin in viaje.itinerarios %}
+          {
+              dia: {{ itin.dia or loop.index }},
+              fecha_iso: {{ itin.fecha_iso | tojson }},
+              destino: {{ (itin.destino_del_dia or (itin.actividades[0].destino if itin.actividades and itin.actividades[0].destino else (viaje.destinos[0].nombre if viaje.destinos and viaje.destinos[0] is mapping else (viaje.destinos[0] if viaje.destinos else '')))) | tojson }}
+          }{% if not loop.last %}, {% endif %}
+          {% endfor %}
+      ]
   };
 
   // ─── Iconos por categoría (reemplazan las fotos genéricas) ───────────────────
@@ -673,6 +686,7 @@
               dibujarMarcadores(dia);
               actualizarPresupuestoDia(dia);
               actualizarLogisticaDiaria(dia);
+              resaltarActividadEnCurso(dia);
           });
       });
   }
@@ -766,6 +780,8 @@
   const marcadoresActividades = {};
   let actividadSeleccionadaId = null;
   let puntosDelDiaActual = [];
+  let actividadesDelDiaActual = [];
+  let tramosActivos = [];
   let mapaEstaAgrandado = false;
 
   function coordenadasDeGoogle(act) {
@@ -1083,6 +1099,8 @@
       const resultados = await Promise.all(tareas);
 
       let ordenPunto = 1;
+      const actividadesMapeadas = [];
+
       resultados.forEach(({ act, coords }) => {
           if (!coords) return;
           const orden = ordenPunto++;
@@ -1112,9 +1130,15 @@
 
           marker.on('click', () => {
               const btn = act.querySelector('.tag-ubicacion-btn');
-              if (btn) {
-                  alternarCentradoActividad(actId, ubicacion, btn, false);
-              }
+              alternarCentradoActividad(actId, ubicacion, btn, false);
+          });
+
+          marker.on('mouseover', () => {
+              resaltarTramoHacia(actId);
+          });
+
+          marker.on('mouseout', () => {
+              restaurarTramos();
           });
 
           marker.addTo(capaActividades);
@@ -1124,87 +1148,224 @@
               lat: coords.lat,
               lon: coords.lon,
               categoria,
+              color,
               element: act,
               orden: orden
           };
 
           puntosDelDiaActual.push([coords.lat, coords.lon]);
+
+          actividadesMapeadas.push({
+              actId,
+              orden,
+              coords,
+              categoria,
+              color,
+              nombre,
+              element: act
+          });
       });
 
+      // Hover sobre tarjetas de actividad en la lista para resaltar su tramo
+      actividadesMapeadas.forEach(item => {
+          if (item.element && !item.element._hoverMapeado) {
+              item.element._hoverMapeado = true;
+              item.element.addEventListener('mouseenter', () => {
+                  resaltarTramoHacia(item.actId);
+              });
+              item.element.addEventListener('mouseleave', () => {
+                  restaurarTramos();
+              });
+          }
+      });
+
+      actividadesDelDiaActual = actividadesMapeadas;
       dibujarRecorridoDelDia();
       actualizarVisibilidadDestinos(dia, destFiltro);
   }
 
-  function renderizarTrazoRecorrido(coordenadas) {
-      if (!capaRecorrido || !coordenadas || coordenadas.length < 2) return;
+  function renderizarTramosRecorrido(tramos) {
+      if (!capaRecorrido) return;
       capaRecorrido.clearLayers();
+      tramosActivos = [];
 
-      // 1. Halo blanco sutil de base para asegurar alto contraste sobre cualquier mapa
-      L.polyline(coordenadas, {
-          color: '#ffffff',
-          weight: 7,
-          opacity: 0.85,
-          interactive: false,
-      }).addTo(capaRecorrido);
+      if (!tramos || tramos.length === 0) return;
 
-      // 2. Línea principal del recorrido (verde de la marca, nítida y sobre la sombra blanca)
-      const linea = L.polyline(coordenadas, {
-          color: '#006d5b',
-          weight: 4.5,
-          opacity: 1,
-          interactive: false,
-      }).addTo(capaRecorrido);
+      tramos.forEach(tramo => {
+          if (!tramo.coordenadas || tramo.coordenadas.length < 2) return;
 
-      // 3. Flechas de dirección más chicas, en blanco contrastante y menor densidad por distancia
-      if (typeof L.polylineDecorator === 'function') {
-          try {
-              L.polylineDecorator(linea, {
-                  patterns: [
-                      {
-                          offset: 40,
-                          repeat: 130,
-                          symbol: L.Symbol.arrowHead({
-                              pixelSize: 8,
-                              polygon: true,
-                              pathOptions: {
-                                  stroke: true,
-                                  color: '#00382e',
-                                  weight: 1,
-                                  fillColor: '#ffffff',
-                                  fillOpacity: 1
-                              }
-                          })
-                      }
-                  ]
-              }).addTo(capaRecorrido);
-          } catch (err) {
-              console.warn('Error al aplicar flechas al recorrido:', err);
+          // 1. Halo blanco sutil de base para asegurar alto contraste sobre cualquier mapa
+          const halo = L.polyline(tramo.coordenadas, {
+              color: '#ffffff',
+              weight: 7,
+              opacity: 0.85,
+              interactive: false,
+              lineCap: 'round',
+              lineJoin: 'round'
+          }).addTo(capaRecorrido);
+
+          // 2. Línea principal del tramo con el color del logo de la actividad de destino
+          const linea = L.polyline(tramo.coordenadas, {
+              color: tramo.color || '#006d5b',
+              weight: 4.5,
+              opacity: 0.95,
+              interactive: true,
+              lineCap: 'round',
+              lineJoin: 'round'
+          }).addTo(capaRecorrido);
+
+          // 3. Flechas de dirección en blanco contrastante con borde del color del logo
+          let decorador = null;
+          if (typeof L.polylineDecorator === 'function') {
+              try {
+                  decorador = L.polylineDecorator(linea, {
+                      patterns: [
+                          {
+                              offset: 35,
+                              repeat: 110,
+                              symbol: L.Symbol.arrowHead({
+                                  pixelSize: 8,
+                                  polygon: true,
+                                  pathOptions: {
+                                      stroke: true,
+                                      color: tramo.color || '#00382e',
+                                      weight: 1.5,
+                                      fillColor: '#ffffff',
+                                      fillOpacity: 1
+                                  }
+                              })
+                          }
+                      ]
+                  }).addTo(capaRecorrido);
+              } catch (err) {
+                  console.warn('Error al aplicar flechas al tramo:', err);
+              }
           }
+
+          // Interacción sobre la línea del tramo: hover resalta el tramo hacia el destino
+          linea.on('mouseover', () => {
+              resaltarTramoHacia(tramo.destinoActId);
+          });
+          linea.on('mouseout', () => {
+              restaurarTramos();
+          });
+          linea.on('click', () => {
+              const actInfo = marcadoresActividades[tramo.destinoActId];
+              if (actInfo && actInfo.element) {
+                  const btn = actInfo.element.querySelector('.tag-ubicacion-btn');
+                  alternarCentradoActividad(tramo.destinoActId, actInfo.element.dataset.ubicacion || '', btn, false);
+              }
+          });
+
+          tramosActivos.push({
+              origenActId: tramo.origenActId,
+              destinoActId: tramo.destinoActId,
+              color: tramo.color,
+              halo,
+              linea,
+              decorador
+          });
+      });
+
+      // Si había una actividad seleccionada, superponer su camino
+      if (actividadSeleccionadaId) {
+          resaltarTramoHacia(actividadSeleccionadaId);
       }
   }
 
-  async function obtenerRutaPorCalles(puntos) {
-      if (!puntos || puntos.length < 2) return null;
+  function resaltarTramoHacia(actId) {
+      if (!tramosActivos || tramosActivos.length === 0) return;
+      const strId = String(actId);
 
-      // Filtrar puntos consecutivos idénticos o excesivamente próximos (< 5 metros)
-      const puntosFiltrados = [puntos[0]];
-      for (let i = 1; i < puntos.length; i++) {
-          const ant = puntosFiltrados[puntosFiltrados.length - 1];
-          const act = puntos[i];
-          if (Math.abs(ant[0] - act[0]) > 0.00005 || Math.abs(ant[1] - act[1]) > 0.00005) {
-              puntosFiltrados.push(act);
+      const tramosDestino = tramosActivos.filter(t => t.destinoActId === strId);
+      if (tramosDestino.length === 0) return;
+
+      tramosActivos.forEach(t => {
+          const esDestino = tramosDestino.includes(t);
+          if (esDestino) {
+              // Superponer el camino que va hacia este logo
+              if (t.halo && t.halo.bringToFront) {
+                  t.halo.bringToFront();
+                  t.halo.setStyle({ weight: 9.5, opacity: 1 });
+              }
+              if (t.linea && t.linea.bringToFront) {
+                  t.linea.bringToFront();
+                  t.linea.setStyle({ weight: 6, opacity: 1 });
+              }
+              if (t.decorador) {
+                  if (typeof t.decorador.bringToFront === 'function') {
+                      t.decorador.bringToFront();
+                  } else if (typeof t.decorador.eachLayer === 'function') {
+                      t.decorador.eachLayer(l => { if (l.bringToFront) l.bringToFront(); });
+                  }
+              }
+          } else {
+              // Atenuar ligeramente los caminos que no van a este logo
+              if (t.halo) {
+                  t.halo.setStyle({ weight: 6, opacity: 0.5 });
+              }
+              if (t.linea) {
+                  t.linea.setStyle({ weight: 4, opacity: 0.65 });
+              }
+          }
+      });
+  }
+
+  function restaurarTramos() {
+      if (!tramosActivos || tramosActivos.length === 0) return;
+
+      // Si hay una actividad seleccionada, mantener superpuesto su tramo
+      if (actividadSeleccionadaId) {
+          resaltarTramoHacia(actividadSeleccionadaId);
+          return;
+      }
+
+      // Si no, restaurar todos los tramos al estado estándar
+      tramosActivos.forEach(t => {
+          if (t.halo) {
+              t.halo.setStyle({ weight: 7, opacity: 0.85 });
+          }
+          if (t.linea) {
+              t.linea.setStyle({ weight: 4.5, opacity: 0.95 });
+          }
+      });
+  }
+
+  function extraerCoordenadasDeLeg(leg) {
+      if (!leg) return null;
+      const coords = [];
+      if (Array.isArray(leg.steps) && leg.steps.length > 0) {
+          for (const step of leg.steps) {
+              const stepCoords = step.geometry && step.geometry.coordinates;
+              if (Array.isArray(stepCoords)) {
+                  for (const c of stepCoords) {
+                      const latLon = [c[1], c[0]];
+                      if (coords.length === 0) {
+                          coords.push(latLon);
+                      } else {
+                          const ult = coords[coords.length - 1];
+                          if (Math.abs(ult[0] - latLon[0]) > 1e-7 || Math.abs(ult[1] - latLon[1]) > 1e-7) {
+                              coords.push(latLon);
+                          }
+                      }
+                  }
+              }
           }
       }
-      if (puntosFiltrados.length < 2) return puntos;
+      return coords.length >= 2 ? coords : null;
+  }
 
-      const cacheKey = puntosFiltrados.map(p => `${p[0].toFixed(5)},${p[1].toFixed(5)}`).join(';');
+  async function obtenerRutaPorCallesSegmentos(actividades) {
+      if (!actividades || actividades.length < 2) return null;
+
+      const cacheKey = actividades.map(a => `${a.coords.lat.toFixed(5)},${a.coords.lon.toFixed(5)}`).join(';');
       if (cacheRutas[cacheKey]) {
           return cacheRutas[cacheKey];
       }
 
       // OSRM perfil vehicular (driving): respeta el sentido de circulación y manos de las calles
-      const coordsQuery = puntosFiltrados.map(p => `${p[1]},${p[0]}`).join(';');
-      const url = `https://router.project-osrm.org/route/v1/driving/${coordsQuery}?overview=full&geometries=geojson`;
+      const coordsQuery = actividades.map(a => `${a.coords.lon},${a.coords.lat}`).join(';');
+      const url = `https://router.project-osrm.org/route/v1/driving/${coordsQuery}?overview=full&geometries=geojson&steps=true`;
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 4000);
@@ -1216,11 +1377,33 @@
 
           const data = await resp.json();
           if (data.code === 'Ok' && data.routes && data.routes.length > 0) {
-              const coordsOSRM = data.routes[0].geometry.coordinates;
-              // OSRM devuelve [lon, lat], Leaflet utiliza [lat, lon]
-              const coordsLeaflet = coordsOSRM.map(c => [c[1], c[0]]);
-              cacheRutas[cacheKey] = coordsLeaflet;
-              return coordsLeaflet;
+              const route = data.routes[0];
+              const legs = route.legs || [];
+
+              const tramosCalles = [];
+              for (let i = 0; i < actividades.length - 1; i++) {
+                  const origen = actividades[i];
+                  const destino = actividades[i + 1];
+                  const leg = legs[i];
+                  let coordsLeg = extraerCoordenadasDeLeg(leg);
+
+                  if (!coordsLeg && actividades.length === 2 && route.geometry && Array.isArray(route.geometry.coordinates)) {
+                      coordsLeg = route.geometry.coordinates.map(c => [c[1], c[0]]);
+                  }
+
+                  tramosCalles.push({
+                      origenActId: origen.actId,
+                      destinoActId: destino.actId,
+                      color: destino.color,
+                      coordenadas: coordsLeg || [
+                          [origen.coords.lat, origen.coords.lon],
+                          [destino.coords.lat, destino.coords.lon]
+                      ]
+                  });
+              }
+
+              cacheRutas[cacheKey] = tramosCalles;
+              return tramosCalles;
           }
       } catch (err) {
           clearTimeout(timeoutId);
@@ -1230,25 +1413,39 @@
   }
 
   function dibujarRecorridoDelDia() {
-      // El orden del array de actividades ES el recorrido: el flujo agrupa los
-      // lugares por zona y después resuelve la ruta desde el hotel. Dibujar la
-      // línea hace visible que el día no cruza la ciudad de punta a punta.
-      if (!capaActividades || puntosDelDiaActual.length < 2) {
+      // El orden del array de actividades ES el recorrido: cada tramo lleva el color
+      // del logo/categoría de la actividad de destino a la que va.
+      if (!capaActividades || actividadesDelDiaActual.length < 2) {
           if (capaRecorrido) capaRecorrido.clearLayers();
+          tramosActivos = [];
           return;
       }
 
       // 1. Trazado preliminar inmediato con L.polyline(puntosDelDiaActual)
-      // Asegura feedback visual instantáneo mientras se resuelve la red de calles
-      renderizarTrazoRecorrido(puntosDelDiaActual);
+      // Asegura feedback visual instantáneo por tramos coloreados mientras se resuelve la red de calles
+      const tramosPreliminares = [];
+      for (let i = 0; i < actividadesDelDiaActual.length - 1; i++) {
+          const origen = actividadesDelDiaActual[i];
+          const destino = actividadesDelDiaActual[i + 1];
+          tramosPreliminares.push({
+              origenActId: origen.actId,
+              destinoActId: destino.actId,
+              color: destino.color,
+              coordenadas: [
+                  [origen.coords.lat, origen.coords.lon],
+                  [destino.coords.lat, destino.coords.lon]
+              ]
+          });
+      }
+      renderizarTramosRecorrido(tramosPreliminares);
 
-      // 2. Consulta asíncrona de calles con OSRM (respetando manos y direcciones de calle)
+      // 2. Consulta asíncrona de calles con OSRM por tramos
       const reqId = ++idRecorridoActual;
-      const puntosConsulta = [...puntosDelDiaActual];
+      const actividadesConsulta = [...actividadesDelDiaActual];
 
-      obtenerRutaPorCalles(puntosConsulta).then(rutaCalles => {
-          if (reqId === idRecorridoActual && rutaCalles && rutaCalles.length >= 2) {
-              renderizarTrazoRecorrido(rutaCalles);
+      obtenerRutaPorCallesSegmentos(actividadesConsulta).then(tramosCalles => {
+          if (reqId === idRecorridoActual && tramosCalles && tramosCalles.length > 0) {
+              renderizarTramosRecorrido(tramosCalles);
           }
       }).catch(err => {
           console.warn('Error al trazar ruta por calles:', err);
@@ -1375,8 +1572,10 @@
       });
 
       actividadSeleccionadaId = strId;
-      elementoBadge.classList.add('active');
-      elementoBadge.title = t('iti_map_uncenter', 'Quitar centrado del mapa');
+      if (elementoBadge) {
+          elementoBadge.classList.add('active');
+          elementoBadge.title = t('iti_map_uncenter', 'Quitar centrado del mapa');
+      }
 
       const info = marcadoresActividades[strId];
       if (info && info.lat && info.lon) {
@@ -1397,6 +1596,9 @@
               }
           });
       }
+
+      // Superponer el camino que va hacia este logo
+      resaltarTramoHacia(strId);
   }
 
   function deseleccionarActividad(restaurarVista = true) {
@@ -1418,6 +1620,8 @@
               restaurarVistaDia(dia);
           }
       }
+
+      restaurarTramos();
   }
 
   function enfocarMapaEnPantalla() {
@@ -2310,13 +2514,161 @@
       try { sessionStorage.setItem(CLAVE_DIA, dia); } catch (e) { /* modo privado */ }
   }
 
+  function obtenerDiaActualEnTranscurso() {
+      if (!VIAJE.fecha_inicio || !VIAJE.fecha_fin) return null;
+
+      const ahora = new Date();
+      const yyyy = ahora.getFullYear();
+      const mm = String(ahora.getMonth() + 1).padStart(2, '0');
+      const dd = String(ahora.getDate()).padStart(2, '0');
+      const hoyIso = `${yyyy}-${mm}-${dd}`;
+
+      const inicio = VIAJE.fecha_inicio.slice(0, 10);
+      const fin = VIAJE.fecha_fin.slice(0, 10);
+      const enTranscurso = (inicio <= hoyIso && hoyIso <= fin) || VIAJE.countdown_estado === 'en_curso';
+
+      if (!enTranscurso) return null;
+
+      let diaEncontrado = null;
+      let destinoEncontrado = null;
+
+      if (Array.isArray(VIAJE.dias_info)) {
+          const info = VIAJE.dias_info.find(d => d.fecha_iso === hoyIso);
+          if (info) {
+              diaEncontrado = info.dia;
+              destinoEncontrado = info.destino;
+          }
+      }
+
+      if (!diaEncontrado) {
+          const dInicio = new Date(inicio + 'T00:00:00');
+          const dHoy = new Date(hoyIso + 'T00:00:00');
+          const difDias = Math.floor((dHoy - dInicio) / (1000 * 60 * 60 * 24));
+          diaEncontrado = difDias + 1;
+      }
+
+      const contenedor = document.getElementById('day-content-' + diaEncontrado);
+      if (!contenedor) return null;
+
+      if (!destinoEncontrado) {
+          destinoEncontrado = contenedor.dataset.destino || null;
+          if (!destinoEncontrado) {
+              const primeraAct = contenedor.querySelector('.activity-item');
+              if (primeraAct) destinoEncontrado = primeraAct.dataset.dest;
+          }
+      }
+
+      return {
+          dia: String(diaEncontrado),
+          destino: destinoEncontrado,
+          hoyIso
+      };
+  }
+
+  function resaltarActividadEnCurso(dia) {
+      const contenedor = document.getElementById('day-content-' + dia);
+      if (!contenedor) return;
+
+      // Limpiar resaltado previo en cualquier día
+      document.querySelectorAll('.activity-en-curso').forEach(el => el.classList.remove('activity-en-curso'));
+      document.querySelectorAll('.badge-en-curso').forEach(el => el.remove());
+      document.querySelectorAll('.timeline-block-en-curso').forEach(el => el.classList.remove('timeline-block-en-curso'));
+
+      const infoActual = obtenerDiaActualEnTranscurso();
+      if (!infoActual || String(infoActual.dia) !== String(dia)) {
+          return;
+      }
+
+      const ahora = new Date();
+      const minutosAhora = ahora.getHours() * 60 + ahora.getMinutes();
+
+      let actividadEnCurso = null;
+      contenedor.querySelectorAll('.activity-item').forEach(item => {
+          const horarioStr = item.dataset.horario;
+          const rango = parsearHorario(horarioStr);
+          if (rango && minutosAhora >= rango.inicio && minutosAhora <= rango.fin) {
+              actividadEnCurso = item;
+          }
+      });
+
+      if (actividadEnCurso) {
+          actividadEnCurso.classList.add('activity-en-curso');
+
+          contenedor.querySelectorAll('.timeline-dot').forEach(dot => dot.classList.remove('active-dot'));
+          const dot = actividadEnCurso.querySelector('.timeline-dot');
+          if (dot) dot.classList.add('active-dot');
+
+          const horarioContainer = actividadEnCurso.querySelector('.d-flex.align-items-center.text-secondary.fw-bold');
+          if (horarioContainer && !actividadEnCurso.querySelector('.badge-en-curso')) {
+              const badge = document.createElement('span');
+              badge.className = 'badge rounded-pill bg-success text-white px-2 py-1 ms-2 badge-en-curso';
+              badge.style.fontSize = '0.72rem';
+              badge.innerHTML = `<i class="fa-solid fa-circle-play me-1"></i><span data-i18n="act_in_progress">${t('act_in_progress', 'En curso')}</span>`;
+              horarioContainer.appendChild(badge);
+          }
+
+          const actNombre = actividadEnCurso.dataset.nombre;
+          contenedor.querySelectorAll('.timeline-block').forEach(b => {
+              if (b.title && b.title.includes(actNombre)) {
+                  b.classList.add('timeline-block-en-curso');
+              }
+          });
+
+          setTimeout(() => {
+              actividadEnCurso.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 350);
+
+          const actId = actividadEnCurso.dataset.id;
+          if (actId) {
+              setTimeout(() => {
+                  resaltarTramoHacia(actId);
+              }, 450);
+          }
+      }
+  }
+
   function restaurarDia() {
+      // 1. Si el viaje está en transcurso, se debe abrir en el día actual y el destino que corresponda a ese día
+      const infoActual = obtenerDiaActualEnTranscurso();
+      if (infoActual) {
+          const diaActual = infoActual.dia;
+          const destinoActual = infoActual.destino;
+
+          // Seleccionar destino correspondiente a ese día
+          if (destinoActual) {
+              const badgeDest = document.querySelector(`.dest-badge[data-dest="${destinoActual}"]`);
+              if (badgeDest) {
+                  badgeDest.click();
+              }
+          }
+
+          // Seleccionar día actual
+          const botonDia = document.querySelector(`.day-tab-btn[data-day="${diaActual}"]`);
+          if (botonDia) {
+              if (!botonDia.classList.contains('btn-brand')) {
+                  botonDia.click();
+              }
+              setTimeout(() => {
+                  botonDia.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+              }, 150);
+          }
+
+          resaltarActividadEnCurso(diaActual);
+          return;
+      }
+
+      // 2. Si no está en transcurso, volver al día guardado en la sesión
       let dia = null;
       try { dia = sessionStorage.getItem(CLAVE_DIA); } catch (e) { return; }
       if (!dia || dia === '1') return;
 
       const boton = document.querySelector(`.day-tab-btn[data-day="${dia}"]`);
-      if (boton) boton.click();
+      if (boton) {
+          boton.click();
+          setTimeout(() => {
+              boton.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          }, 150);
+      }
   }
 
   function inicializarProximaActividad() {
@@ -2623,6 +2975,13 @@
       }
 
       inicializarMapaUbicacion();
+
+      // Chequeo periódico de la actividad en curso según la hora
+      setInterval(() => {
+          const activeDayBtn = document.querySelector('.day-tab-btn.btn-brand');
+          const dia = activeDayBtn ? activeDayBtn.dataset.day : null;
+          if (dia) resaltarActividadEnCurso(dia);
+      }, 60000);
 
       // Eventos para agrandar/reducir el mapa
       document.getElementById('btn-expand-map')?.addEventListener('click', alternarAgrandarMapa);
